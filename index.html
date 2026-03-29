@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YOUR WAY — Pakistan Educational Platform</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇵🇰</text></svg>" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=Orbitron:wght@700;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --emerald:#00C896;--emerald-dark:#009d77;--emerald-glow:rgba(0,200,150,0.18);
+  --navy:#050d1a;--navy2:#0a1628;--navy3:#0f2040;--card:rgba(10,22,40,0.85);
+  --border:rgba(0,200,150,0.18);--text:#e8f4f0;--muted:rgba(232,244,240,0.5);
+  --gold:#f5c842;--red:#ff4f6a;--white:#ffffff;
+}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--navy2)}::-webkit-scrollbar-thumb{background:var(--emerald-dark);border-radius:3px}
+.bg-stars{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,200,150,0.10) 0%,transparent 70%),radial-gradient(ellipse 40% 30% at 85% 20%,rgba(0,100,200,0.08) 0%,transparent 60%),var(--navy)}
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(0,200,150,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,150,0.04) 1px,transparent 1px);background-size:48px 48px}
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:64px;background:rgba(5,13,26,0.92);border-bottom:1px solid var(--border);backdrop-filter:blur(18px);flex-wrap:wrap;gap:8px}
+.nav-logo{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;color:var(--emerald);letter-spacing:2px;display:flex;align-items:center;gap:8px;cursor:pointer}
+.nav-logo span{color:var(--white)}
+.nav-logo-dot{width:9px;height:9px;background:var(--emerald);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,200,150,.5)}50%{box-shadow:0 0 0 8px rgba(0,200,150,0)}}
+.nav-tabs{display:flex;gap:2px;flex-wrap:wrap}
+.nav-tab{padding:6px 12px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;transition:all .2s;position:relative}
+.nav-tab:hover{color:var(--text);background:rgba(0,200,150,0.08)}
+.nav-tab.active{color:var(--emerald);background:rgba(0,200,150,0.12)}
+.nav-user{display:flex;align-items:center;gap:8px}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),#007a5e);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:var(--navy);border:2px solid var(--emerald);cursor:pointer;flex-shrink:0}
+.btn-logout{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.8rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn-logout:hover{color:var(--red);border-color:var(--red)}
+.btn-primary{padding:11px 28px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));color:var(--navy);font-weight:700;font-size:.95rem;cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,200,150,0.35)}
+.btn-outline{padding:10px 24px;border-radius:10px;border:1.5px solid var(--emerald);background:transparent;color:var(--emerald);font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn-outline:hover{background:var(--emerald-glow)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(12px);padding:24px}
+.card-glow{box-shadow:0 0 0 1px var(--border),0 8px 40px rgba(0,200,150,0.07);transition:box-shadow .3s}
+.card-glow:hover{box-shadow:0 0 0 1px rgba(0,200,150,0.4),0 12px 50px rgba(0,200,150,0.14)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:30px;font-size:.75rem;font-weight:600}
+.badge-emerald{background:rgba(0,200,150,0.12);color:var(--emerald);border:1px solid rgba(0,200,150,0.25)}
+.badge-gold{background:rgba(245,200,66,0.1);color:var(--gold);border:1px solid rgba(245,200,66,0.25)}
+.badge-red{background:rgba(255,79,106,0.1);color:var(--red);border:1px solid rgba(255,79,106,0.25)}
+.form-group{display:flex;flex-direction:column;gap:7px}
+.form-label{font-size:.82rem;color:var(--muted);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.form-input{padding:12px 16px;border-radius:10px;border:1.5px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:.95rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+.form-input:focus{border-color:var(--emerald);box-shadow:0 0 0 3px rgba(0,200,150,0.12)}
+.form-input::placeholder{color:rgba(232,244,240,0.25)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeIn .4s ease forwards}
+.progress-bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald),#00f5b8);transition:width .6s ease}
+.section-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--white) 30%,var(--emerald));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+.divider{height:1px;background:var(--border);margin:20px 0}
+.table{width:100%;border-collapse:collapse}
+.table th{text-align:left;padding:10px 14px;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border)}
+.table td{padding:12px 14px;border-bottom:1px solid rgba(0,200,150,0.06);font-size:.9rem}
+.table tr:last-child td{border-bottom:none}
+.quiz-option{padding:14px 18px;border-radius:12px;border:1.5px solid var(--border);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s;font-size:.93rem;text-align:left;color:var(--text);width:100%;font-family:'DM Sans',sans-serif;margin-bottom:10px}
+.quiz-option:hover:not(:disabled){border-color:var(--emerald);background:rgba(0,200,150,0.08)}
+.quiz-option.correct{border-color:var(--emerald)!important;background:rgba(0,200,150,0.15)!important;color:var(--emerald)}
+.quiz-option.wrong{border-color:var(--red)!important;background:rgba(255,79,106,0.1)!important;color:var(--red)}
+.quiz-option:disabled{cursor:default}
+.chat-bubble{max-width:75%;padding:11px 16px;border-radius:18px;font-size:.92rem;line-height:1.55}
+.chat-bubble.user{background:linear-gradient(135deg,var(--emerald),var(--emerald-dark));color:var(--navy);border-bottom-right-radius:4px;align-self:flex-end}
+.chat-bubble.bot{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px;align-self:flex-start}
+.ann-card{border-left:3px solid var(--emerald);padding:14px 18px;border-radius:0 12px 12px 0;background:rgba(0,200,150,0.05)}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.shimmer{background:linear-gradient(90deg,rgba(255,255,255,.03) 0%,rgba(0,200,150,.08) 50%,rgba(255,255,255,.03) 100%);background-size:200% 100%;animation:shimmer 2.5s infinite}
+</style>
+</head>
+<body>
+<div class="bg-stars"></div>
+<div class="bg-grid"></div>
+<div id="root" style="position:relative;z-index:1;min-height:100vh"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const QUESTIONS = [
+  {q:"What is the capital of Pakistan?",opts:["Lahore","Karachi","Islamabad","Peshawar"],ans:2},
+  {q:"In which year did Pakistan gain independence?",opts:["1945","1947","1950","1952"],ans:1},
+  {q:"Who was the founder of Pakistan?",opts:["Allama Iqbal","Liaquat Ali Khan","Quaid-e-Azam Muhammad Ali Jinnah","Zulfikar Ali Bhutto"],ans:2},
+  {q:"What is the national language of Pakistan?",opts:["Punjabi","Sindhi","Urdu","Pashto"],ans:2},
+  {q:"Which is the largest province of Pakistan by area?",opts:["Punjab","Sindh","Khyber Pakhtunkhwa","Balochistan"],ans:3},
+  {q:"What is the currency of Pakistan?",opts:["Rupee","Taka","Dinar","Dirham"],ans:0},
+  {q:"Pakistan's highest mountain K2 is in which range?",opts:["Himalayas","Karakoram","Hindu Kush","Sulaiman"],ans:1},
+  {q:"Which river is the longest in Pakistan?",opts:["Ravi","Chenab","Jhelum","Indus"],ans:3},
+  {q:"The Badshahi Mosque is located in which city?",opts:["Islamabad","Karachi","Lahore","Multan"],ans:2},
+  {q:"Who was Pakistan's first Prime Minister?",opts:["Ayub Khan","Liaquat Ali Khan","Iskander Mirza","Zulfikar Bhutto"],ans:1},
+  {q:"In which year did Pakistan conduct its first nuclear tests?",opts:["1996","1998","2000","2002"],ans:1},
+  {q:"The Thar Desert is located in which province?",opts:["Punjab","Balochistan","Sindh","KPK"],ans:2},
+  {q:"Which is the national bird of Pakistan?",opts:["Eagle","Parrot","Chukar Partridge","Peacock"],ans:2},
+  {q:"Pakistan's national anthem was written by?",opts:["Allama Iqbal","Hafeez Jalandhari","Faiz Ahmed Faiz","Ahmad Nadeem Qasmi"],ans:1},
+  {q:"Which Pakistani won the Nobel Prize?",opts:["Dr. A.Q. Khan","Dr. Abdus Salam","Dr. Adeeb Rizvi","Dr. Samar"],ans:1},
+  {q:"The Karakoram Highway connects Pakistan with?",opts:["India","Afghanistan","China","Iran"],ans:2},
+  {q:"Which country shares the longest border with Pakistan?",opts:["India","China","Afghanistan","Iran"],ans:2},
+  {q:"Mohenjo-daro is located in which province?",opts:["Punjab","Sindh","Balochistan","KPK"],ans:1},
+  {q:"What is the area of Pakistan in sq km (approx)?",opts:["696,096","796,096","881,913","602,000"],ans:0},
+  {q:"Who became Chairman of Pakistan Senate in 2024?",opts:["Sadiq Sanjrani","Yusuf Raza Gilani","Shehbaz Sharif","Raja Pervaiz Ashraf"],ans:1},
+];
+
+const LEADERBOARD=[
+  {rank:1,name:"Ayesha Malik",city:"Lahore",score:98,quizzes:15},
+  {rank:2,name:"Bilal Hussain",city:"Karachi",score:95,quizzes:14},
+  {rank:3,name:"Zara Ahmed",city:"Islamabad",score:93,quizzes:16},
+  {rank:4,name:"Hassan Raza",city:"Peshawar",score:91,quizzes:12},
+  {rank:5,name:"Fatima Noor",city:"Quetta",score:89,quizzes:13},
+  {rank:6,name:"Usman Tariq",city:"Faisalabad",score:87,quizzes:11},
+  {rank:7,name:"Sana Butt",city:"Multan",score:85,quizzes:10},
+];
+
+const ANNOUNCEMENTS=[
+  {date:"March 2025",title:"🎉 March Top Performer: Ayesha Malik!",body:"Ayesha from Lahore achieved a perfect score in the Constitution & Governance quiz. She is awarded the YOUR WAY Gold Badge and a digital certificate of excellence.",tag:"Top Student"},
+  {date:"March 2025",title:"📢 New Quiz Series: Pakistan Current Affairs 2025",body:"A brand new quiz series covering the latest political, economic, and social developments has been launched. Participate now to climb the leaderboard!",tag:"New Quiz"},
+  {date:"February 2025",title:"🏆 February Monthly Winners Announced",body:"Congratulations to Bilal Hussain (Karachi) and Zara Ahmed (Islamabad) for finishing 1st and 2nd in February. A virtual ceremony will be held on March 5th.",tag:"Winners"},
+  {date:"February 2025",title:"📋 Mid-Year Mock Test Scheduled",body:"A comprehensive 100-question mock test covering all topics will be held on March 30, 2025. Register via your student portal before March 25.",tag:"Event"},
+];
+
+const BOT=[
+  "Pakistan was founded on August 14, 1947 under Quaid-e-Azam Muhammad Ali Jinnah.",
+  "The capital of Pakistan is Islamabad, established in the 1960s.",
+  "To ace quizzes: focus on history, constitution, geography & current affairs 2024-25!",
+  "K2 is the world's second highest peak, located in the Karakoram range in Pakistan.",
+  "Pakistan has 4 provinces: Punjab, Sindh, KPK, and Balochistan.",
+  "The Indus River is the longest river in Pakistan.",
+  "Pakistan's population is over 220 million, making it the 5th most populous country.",
+  "Keep practicing daily! Consistency is the key to topping the leaderboard. 💪",
+];
+
+function getBotReply(msg){
+  const m=msg.toLowerCase();
+  if(m.includes("capital"))return"The capital of Pakistan is Islamabad. 🏛️";
+  if(m.includes("founder")||m.includes("jinnah"))return"Pakistan was founded by Quaid-e-Azam Muhammad Ali Jinnah on August 14, 1947. 🇵🇰";
+  if(m.includes("quiz")||m.includes("tip"))return"Quiz Tips: Study Pakistan history, constitutional articles, all 4 provinces, and daily current affairs. Practice every day! 📚";
+  if(m.includes("score")||m.includes("improve"))return"To improve: review every wrong answer carefully, study weak topics, and attempt at least 1 quiz daily. You got this! 💪";
+  if(m.includes("river"))return"The Indus River is the longest river in Pakistan, flowing 3,180 km through the country.";
+  if(m.includes("mountain")||m.includes("k2"))return"K2 (8,611m) is Pakistan's highest peak and the world's second highest mountain, located in the Karakoram range.";
+  if(m.includes("population"))return"Pakistan's population is over 220 million (2024), making it the 5th most populous country in the world.";
+  if(m.includes("hello")||m.includes("hi")||m.includes("salam"))return"Wa Alaikum Assalam! 🌟 Great to have you here. Ask me anything about Pakistan GK or current affairs!";
+  return BOT[Math.floor(Math.random()*BOT.length)];
+}
+
+function App(){
+  const [user,setUser]=useState(null);
+  const [page,setPage]=useState("signup");
+  const [quizHistory,setQuizHistory]=useState([]);
+  function handleSignup(name){setUser({name,joined:new Date().toLocaleDateString("en-PK",{month:"long",year:"numeric"})});setPage("portal");}
+  function handleLogout(){setUser(null);setPage("signup");}
+  function handleQuizDone(result){setQuizHistory(h=>[result,...h]);setPage("portal");}
+  return(
+    <div>
+      {user&&(
+        <nav className="nav">
+          <div className="nav-logo" onClick={()=>setPage("portal")}>
+            <div className="nav-logo-dot"/>YOUR<span>WAY</span>
+          </div>
+          <div className="nav-tabs">
+            {[["portal","🏠 Portal"],["quiz","⚡ Quiz"],["announcements","📣 News"],["chat","🤖 Chat"]].map(([id,label])=>(
+              <button key={id} className={`nav-tab${page===id?" active":""}`} onClick={()=>setPage(id)}>{label}</button>
+            ))}
+          </div>
+          <div className="nav-user">
+            <div className="avatar">{user.name[0].toUpperCase()}</div>
+            <button className="btn-logout" onClick={handleLogout}>Exit</button>
+          </div>
+        </nav>
+      )}
+      {page==="signup"&&<SignupPage onSignup={handleSignup}/>}
+      {page==="portal"&&user&&<PortalPage user={user} quizHistory={quizHistory} onNav={setPage}/>}
+      {page==="quiz"&&user&&<QuizPage onDone={handleQuizDone}/>}
+      {page==="announcements"&&user&&<AnnouncementsPage/>}
+      {page==="chat"&&user&&<ChatPage user={user}/>}
+    </div>
+  );
+}
+
+function SignupPage({onSignup}){
+  const [name,setName]=useState("");
+  const [pass,setPass]=useState("");
+  const [mode,setMode]=useState("signup");
+  const [err,setErr]=useState("");
+  const [loading,setLoading]=useState(false);
+  function submit(){
+    if(!name.trim()){setErr("Please enter your name.");return;}
+    if(pass.length<4){setErr("Password must be at least 4 characters.");return;}
+    setErr("");setLoading(true);
+    setTimeout(()=>{setLoading(false);onSignup(name.trim());},1200);
+  }
+  return(
+    <div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",padding:"2rem"}}>
+      <div style={{width:"100%",maxWidth:420}} className="animate-in">
+        <div style={{textAlign:"center",marginBottom:"2rem"}}>
+          <div style={{fontFamily:"'Orbitron',monospace",fontSize:"2.6rem",fontWeight:900,color:"var(--emerald)",letterSpacing:4}}>
+            YOUR<span style={{color:"var(--white)"}}>WAY</span>
+          </div>
+          <div style={{color:"var(--muted)",fontSize:".9rem",marginTop:6}}>Pakistan's Premier Educational Platform</div>
+          <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:12,flexWrap:"wrap"}}>
+            <span className="badge badge-emerald">🇵🇰 Pakistan GK</span>
+            <span className="badge badge-gold">⚡ Current Affairs</span>
+            <span className="badge badge-emerald">🏆 Leaderboard</span>
+          </div>
+        </div>
+        <div className="card card-glow" style={{padding:"2rem"}}>
+          <div style={{display:"flex",background:"rgba(255,255,255,0.04)",borderRadius:10,padding:4,marginBottom:"1.5rem"}}>
+            {["signup","login"].map(m=>(
+              <button key={m} onClick={()=>setMode(m)} style={{flex:1,padding:"8px",borderRadius:8,border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontSize:".9rem",fontWeight:600,background:mode===m?"var(--emerald)":"transparent",color:mode===m?"var(--navy)":"var(--muted)",transition:"all .2s"}}>
+                {m==="signup"?"Sign Up":"Login"}
+              </button>
+            ))}
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+            <div className="form-group">
+              <label className="form-label">Full Name</label>
+              <input className="form-input" placeholder="e.g. Ayesha Malik" value={name} onChange={e=>setName(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()}/>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <input className="form-input" type="password" placeholder="Min 4 characters" value={pass} onChange={e=>setPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&submit()}/>
+            </div>
+            {err&&<div style={{color:"var(--red)",fontSize:".85rem",padding:"9px 14px",background:"rgba(255,79,106,0.1)",borderRadius:8,border:"1px solid rgba(255,79,106,0.2)"}}>{err}</div>}
+            <button className="btn-primary" onClick={submit} disabled={loading} style={{width:"100%",opacity:loading?.7:1}}>
+              {loading?"Entering Platform...":mode==="signup"?"Create Account →":"Login →"}
+            </button>
+          </div>
+          <div className="divider"/>
+          <div style={{display:"flex",justifyContent:"space-around"}}>
+            {[["📚","GK Quizzes"],["🏆","Leaderboard"],["🤖","AI Chat"]].map(([i,l])=>(
+              <div key={l} style={{textAlign:"center"}}>
+                <div style={{fontSize:"1.3rem"}}>{i}</div>
+                <div style={{fontSize:".73rem",color:"var(--muted)",marginTop:3}}>{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{textAlign:"center",marginTop:"1.2rem",color:"var(--muted)",fontSize:".8rem"}}>© 2025 YOUR WAY • Made for Pakistani Students 🇵🇰</div>
+      </div>
+    </div>
+  );
+}
+
+function PortalPage({user,quizHistory,onNav}){
+  const total=quizHistory.length;
+  const avg=total?Math.round(quizHistory.reduce((a,b)=>a+b.pct,0)/total):0;
+  const best=total?Math.max(...quizHistory.map(h=>h.pct)):0;
+  return(
+    <div style={{maxWidth:1100,margin:"0 auto",padding:"2rem 1.2rem"}} className="animate-in">
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"1.5rem",flexWrap:"wrap",gap:"1rem"}}>
+        <div>
+          <div style={{color:"var(--muted)",fontSize:".85rem",marginBottom:4}}>Welcome back,</div>
+          <div className="section-title">Hello, {user.name}! 👋</div>
+          <div style={{color:"var(--muted)",fontSize:".85rem",marginTop:5}}>Joined {user.joined} • Keep learning!</div>
+        </div>
+        <button className="btn-primary" onClick={()=>onNav("quiz")}>⚡ Start Quiz</button>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:"1rem",marginBottom:"1.5rem"}}>
+        {[{label:"Quizzes Taken",value:total,icon:"📝"},{label:"Avg Score",value:avg+"%",icon:"📊"},{label:"Best Score",value:best+"%",icon:"🏆"},{label:"Rank",value:total?"#"+Math.max(1,8-Math.floor(avg/15)):"—",icon:"🎯"}].map(s=>(
+          <div key={s.label} className="card card-glow shimmer" style={{textAlign:"center"}}>
+            <div style={{fontSize:"1.5rem",marginBottom:6}}>{s.icon}</div>
+            <div style={{fontFamily:"'Orbitron',monospace",fontSize:"1.6rem",color:"var(--emerald)",fontWeight:700}}>{s.value}</div>
+            <div style={{fontSize:".75rem",color:"var(--muted)",marginTop:3,textTransform:"uppercase",letterSpacing:1}}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1.2rem"}}>
+        <div className="card card-glow">
+          <div style={{fontWeight:700,fontSize:"1rem",marginBottom:"1rem"}}>📋 Recent Quizzes</div>
+          {total===0?(
+            <div style={{textAlign:"center",padding:"1.5rem 0"}}>
+              <div style={{fontSize:"2rem",marginBottom:10}}>🎯</div>
+              <div style={{color:"var(--muted)",fontSize:".88rem",marginBottom:"1rem"}}>No quizzes taken yet.</div>
+              <button className="btn-outline" onClick={()=>onNav("quiz")}>Take First Quiz</button>
+            </div>
+          ):(
+            <table className="table">
+              <thead><tr><th>#</th><th>Date</th><th>Score</th><th>Grade</th></tr></thead>
+              <tbody>
+                {quizHistory.slice(0,5).map((h,i)=>(
+                  <tr key={i}>
+                    <td style={{color:"var(--muted)"}}>{i+1}</td>
+                    <td style={{fontSize:".82rem",color:"var(--muted)"}}>{h.date}</td>
+                    <td><span style={{fontFamily:"'Orbitron',monospace",color:"var(--emerald)",fontSize:".85rem"}}>{h.correct}/20</span></td>
+                    <td><span className={`badge ${h.pct>=80?"badge-emerald":h.pct>=50?"badge-gold":"badge-red"}`}>{h.pct>=80?"Excellent":h.pct>=50?"Good":"Try Again"}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div className="card card-glow">
+          <div style={{fontWeight:700,fontSize:"1rem",marginBottom:"1rem"}}>📈 Performance</div>
+          {total>0?(
+            <div style={{display:"flex",flexDirection:"column",gap:"0.8rem"}}>
+              {quizHistory.slice(0,5).map((h,i)=>(
+                <div key={i}>
+                  <div style={{display:"flex",justifyContent:"space-between",fontSize:".8rem",marginBottom:4}}>
+                    <span style={{color:"var(--muted)"}}>Quiz {total-i}</span>
+                    <span style={{color:"var(--emerald)"}}>{h.pct}%</span>
+                  </div>
+                  <div className="progress-bar"><div className="progress-fill" style={{width:h.pct+"%"}}/></div>
+                </div>
+              ))}
+            </div>
+          ):(
+            <div>
+              <div style={{fontWeight:600,marginBottom:"0.8rem",color:"var(--text)"}}>📌 Study Tips</div>
+              {["Read Dawn News daily","Focus on Pakistan constitution","Study all 4 provinces geography","Review mistakes after each quiz","Aim for 1 quiz per day"].map((t,i)=>(
+                <div key={i} style={{display:"flex",gap:8,marginBottom:8,fontSize:".88rem",color:"var(--muted)"}}>
+                  <span style={{color:"var(--emerald)"}}>→</span>{t}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      <div style={{marginTop:"1.2rem",display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:"1rem"}}>
+        {[{icon:"🎯",title:"Take Quiz",desc:"20 Qs • 45s timer",page:"quiz"},{icon:"📣",title:"Announcements",desc:"Winners & events",page:"announcements"},{icon:"🤖",title:"AI Chat",desc:"Ask Pakistan GK",page:"chat"}].map(c=>(
+          <div key={c.page} className="card card-glow" style={{cursor:"pointer",display:"flex",gap:14,alignItems:"center"}} onClick={()=>onNav(c.page)}>
+            <div style={{fontSize:"1.8rem"}}>{c.icon}</div>
+            <div><div style={{fontWeight:600,marginBottom:2}}>{c.title}</div><div style={{fontSize:".8rem",color:"var(--muted)"}}>{c.desc}</div></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function QuizPage({onDone}){
+  const [current,setCurrent]=useState(0);
+  const [selected,setSelected]=useState(null);
+  const [answered,setAnswered]=useState(false);
+  const [score,setScore]=useState(0);
+  const [timeLeft,setTimeLeft]=useState(45);
+  const [finished,setFinished]=useState(false);
+  const timerRef=useRef(null);
+  const q=QUESTIONS[current];
+  const circumference=2*Math.PI*35;
+
+  useEffect(()=>{
+    if(finished||answered)return;
+    timerRef.current=setInterval(()=>{
+      setTimeLeft(t=>{
+        if(t<=1){clearInterval(timerRef.current);handleTimeout();return 0;}
+        return t-1;
+      });
+    },1000);
+    return()=>clearInterval(timerRef.current);
+  },[current,finished,answered]);
+
+  function handleTimeout(){setAnswered(true);setTimeout(()=>advance(),1500);}
+  function select(i){
+    if(answered)return;
+    clearInterval(timerRef.current);
+    setSelected(i);setAnswered(true);
+    if(i===q.ans)setScore(s=>s+1);
+    setTimeout(()=>advance(),1200);
+  }
+  function advance(){
+    if(current+1>=QUESTIONS.length){setFinished(true);}
+    else{setCurrent(c=>c+1);setSelected(null);setAnswered(false);setTimeLeft(45);}
+  }
+
+  if(finished){
+    const pct=Math.round((score/QUESTIONS.length)*100);
+    return(
+      <div style={{maxWidth:520,margin:"3rem auto",padding:"0 1.2rem"}} className="animate-in">
+        <div className="card card-glow" style={{textAlign:"center",padding:"2.5rem 2rem"}}>
+          <div style={{fontSize:"3.5rem",marginBottom:"0.8rem"}}>{pct>=80?"🏆":pct>=60?"🎯":"📚"}</div>
+          <div style={{fontFamily:"'Orbitron',monospace",fontSize:"2.5rem",color:"var(--emerald)",fontWeight:700}}>{pct}%</div>
+          <div style={{fontWeight:700,fontSize:"1.1rem",margin:"0.6rem 0",color:pct>=80?"var(--emerald)":pct>=60?"var(--gold)":"var(--red)"}}>{pct>=80?"Outstanding! 🌟":pct>=60?"Well Done! 👍":"Keep Practicing! 💪"}</div>
+          <div style={{color:"var(--muted)",marginBottom:"1.5rem"}}>You answered <strong style={{color:"var(--text)"}}>{score}/{QUESTIONS.length}</strong> correctly.</div>
+          <div style={{display:"flex",justifyContent:"center",gap:"2rem",marginBottom:"1.5rem"}}>
+            <div style={{textAlign:"center"}}><div style={{fontFamily:"'Orbitron',monospace",fontSize:"1.6rem",color:"var(--emerald)"}}>{score}</div><div style={{fontSize:".75rem",color:"var(--muted)",textTransform:"uppercase",letterSpacing:1}}>Correct</div></div>
+            <div style={{textAlign:"center"}}><div style={{fontFamily:"'Orbitron',monospace",fontSize:"1.6rem",color:"var(--red)"}}>{QUESTIONS.length-score}</div><div style={{fontSize:".75rem",color:"var(--muted)",textTransform:"uppercase",letterSpacing:1}}>Wrong</div></div>
+          </div>
+          <button className="btn-primary" style={{width:"100%"}} onClick={()=>onDone({correct:score,pct,date:new Date().toLocaleDateString("en-PK",{day:"numeric",month:"short"})})}>View My Portal →</button>
+        </div>
+      </div>
+    );
+  }
+
+  const dashOffset=circumference-(timeLeft/45)*circumference;
+  const timerColor=timeLeft>20?"#00C896":timeLeft>10?"#f5c842":"#ff4f6a";
+  return(
+    <div style={{maxWidth:660,margin:"2rem auto",padding:"0 1.2rem"}} className="animate-in">
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"1.2rem"}}>
+        <div>
+          <div style={{fontFamily:"'Orbitron',monospace",color:"var(--emerald)",fontWeight:700}}>Q{current+1} <span style={{color:"var(--muted)",fontWeight:400}}>/ {QUESTIONS.length}</span></div>
+          <div className="progress-bar" style={{width:180,marginTop:6}}><div className="progress-fill" style={{width:`${((current+1)/QUESTIONS.length)*100}%`}}/></div>
+        </div>
+        <div style={{position:"relative",width:72,height:72}}>
+          <svg width="72" height="72" style={{transform:"rotate(-90deg)"}}>
+            <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5"/>
+            <circle cx="36" cy="36" r="30" fill="none" stroke={timerColor} strokeWidth="5" strokeDasharray={circumference} strokeDashoffset={dashOffset} strokeLinecap="round" style={{transition:"stroke-dashoffset 1s linear,stroke .3s"}}/>
+          </svg>
+          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Orbitron',monospace",fontSize:"1.1rem",fontWeight:700,color:timerColor}}>{timeLeft}</div>
+        </div>
+      </div>
+      <div className="card" style={{marginBottom:"1rem",background:"rgba(0,200,150,0.04)",borderColor:"rgba(0,200,150,0.2)"}}>
+        <div style={{fontSize:"1.05rem",fontWeight:600,lineHeight:1.6}}>{q.q}</div>
+      </div>
+      <div>
+        {q.opts.map((opt,i)=>{
+          let cls="quiz-option";
+          if(answered){if(i===q.ans)cls+=" correct";else if(i===selected)cls+=" wrong";}
+          return(<button key={i} className={cls} onClick={()=>select(i)} disabled={answered}>
+            <span style={{marginRight:8,fontFamily:"'Orbitron',monospace",fontSize:".78rem",color:"var(--muted)"}}>{String.fromCharCode(65+i)}</span>{opt}
+          </button>);
+        })}
+      </div>
+      <div style={{textAlign:"center",marginTop:"1rem",color:"var(--muted)",fontSize:".85rem"}}>Score: <span style={{color:"var(--emerald)",fontFamily:"'Orbitron',monospace"}}>{score}</span></div>
+    </div>
+  );
+}
+
+function AnnouncementsPage(){
+  return(
+    <div style={{maxWidth:1100,margin:"0 auto",padding:"2rem 1.2rem"}} className="animate-in">
+      <div style={{marginBottom:"1.5rem"}}>
+        <div className="section-title">Announcements & Updates</div>
+        <div style={{color:"var(--muted)",marginTop:6,fontSize:".9rem"}}>Stay informed with the latest news, events, and top performers.</div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1.2rem"}}>
+        <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+          {ANNOUNCEMENTS.map((a,i)=>(
+            <div key={i} className="card card-glow animate-in" style={{animationDelay:`${i*0.1}s`}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"0.7rem",flexWrap:"wrap",gap:6}}>
+                <span className="badge badge-emerald">{a.tag}</span>
+                <span style={{fontSize:".78rem",color:"var(--muted)"}}>{a.date}</span>
+              </div>
+              <div className="ann-card">
+                <div style={{fontWeight:700,fontSize:"1rem",marginBottom:6}}>{a.title}</div>
+                <div style={{color:"var(--muted)",lineHeight:1.65,fontSize:".88rem"}}>{a.body}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="card card-glow" style={{alignSelf:"start"}}>
+          <div style={{fontWeight:700,fontSize:"1rem",marginBottom:"1rem"}}>🏆 Monthly Top Students — March 2025</div>
+          {LEADERBOARD.map((s,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:i<LEADERBOARD.length-1?"1px solid var(--border)":"none"}}>
+              <div style={{width:26,textAlign:"center",fontSize:i<3?"1.2rem":".8rem",color:i<3?"inherit":"var(--muted)",fontFamily:"'Orbitron',monospace"}}>
+                {i===0?"🥇":i===1?"🥈":i===2?"🥉":"#"+s.rank}
+              </div>
+              <div className="avatar" style={{width:32,height:32,fontSize:".8rem"}}>{s.name[0]}</div>
+              <div style={{flex:1}}>
+                <div style={{fontWeight:600,fontSize:".88rem"}}>{s.name}</div>
+                <div style={{fontSize:".73rem",color:"var(--muted)"}}>{s.city}</div>
+              </div>
+              <div style={{textAlign:"right"}}>
+                <div style={{fontFamily:"'Orbitron',monospace",color:"var(--emerald)",fontSize:".85rem"}}>{s.score}%</div>
+                <div style={{fontSize:".7rem",color:"var(--muted)"}}>{s.quizzes} quizzes</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChatPage({user}){
+  const [messages,setMessages]=useState([{from:"bot",text:"Assalam-o-Alaikum! 🇵🇰 I'm YOUR WAY Assistant. Ask me anything about Pakistan — history, geography, current affairs, or quiz tips!",time:now()}]);
+  const [input,setInput]=useState("");
+  const [typing,setTyping]=useState(false);
+  const bottomRef=useRef();
+  function now(){return new Date().toLocaleTimeString("en-PK",{hour:"2-digit",minute:"2-digit"});}
+  function send(){
+    const msg=input.trim();if(!msg)return;
+    setInput("");
+    setMessages(m=>[...m,{from:"user",text:msg,time:now()}]);
+    setTyping(true);
+    setTimeout(()=>{setTyping(false);setMessages(m=>[...m,{from:"bot",text:getBotReply(msg),time:now()}]);},800+Math.random()*500);
+  }
+  useEffect(()=>{bottomRef.current?.scrollIntoView({behavior:"smooth"});},[messages,typing]);
+  const SUGG=["Capital of Pakistan?","Quiz tips","K2 mountain","Pakistan population"];
+  return(
+    <div style={{maxWidth:720,margin:"0 auto",padding:"1.5rem 1.2rem",display:"flex",flexDirection:"column",height:"calc(100vh - 64px)"}}>
+      <div className="card" style={{marginBottom:"0.8rem",display:"flex",alignItems:"center",gap:12,padding:"14px 18px"}}>
+        <div style={{width:42,height:42,borderRadius:"50%",background:"linear-gradient(135deg,var(--emerald),#007a5e)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.3rem"}}>🤖</div>
+        <div>
+          <div style={{fontWeight:700}}>YOUR WAY Assistant</div>
+          <div style={{fontSize:".78rem",color:"var(--emerald)",display:"flex",alignItems:"center",gap:5}}>
+            <span style={{width:6,height:6,borderRadius:"50%",background:"var(--emerald)",display:"inline-block",animation:"pulse 2s infinite"}}/>Online • Pakistan GK Expert
+          </div>
+        </div>
+      </div>
+      <div style={{flex:1,overflowY:"auto",display:"flex",flexDirection:"column",gap:"0.8rem",paddingRight:4}}>
+        {messages.map((m,i)=>(
+          <div key={i} style={{display:"flex",flexDirection:"column",alignItems:m.from==="user"?"flex-end":"flex-start"}}>
+            <div className={`chat-bubble ${m.from}`}>{m.text}</div>
+            <div style={{fontSize:".7rem",color:"var(--muted)",marginTop:3}}>{m.time}</div>
+          </div>
+        ))}
+        {typing&&(
+          <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
+            <div className="chat-bubble bot" style={{display:"flex",gap:5,alignItems:"center"}}>
+              {[0,1,2].map(i=><span key={i} style={{width:7,height:7,borderRadius:"50%",background:"var(--emerald)",display:"inline-block",animation:`pulse ${.8+i*.2}s infinite`}}/>)}
+            </div>
+          </div>
+        )}
+        <div ref={bottomRef}/>
+      </div>
+      <div style={{display:"flex",gap:6,flexWrap:"wrap",margin:"0.8rem 0 0.6rem"}}>
+        {SUGG.map(s=>(
+          <button key={s} onClick={()=>setInput(s)} style={{padding:"5px 12px",borderRadius:20,border:"1px solid var(--border)",background:"rgba(0,200,150,0.05)",color:"var(--muted)",fontSize:".78rem",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{s}</button>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:"0.6rem"}}>
+        <input className="form-input" placeholder="Ask about Pakistan GK..." value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()}/>
+        <button className="btn-primary" onClick={send} style={{whiteSpace:"nowrap",padding:"11px 20px"}}>Send →</button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
