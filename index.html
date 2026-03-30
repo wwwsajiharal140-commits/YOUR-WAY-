@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YOUR WAY</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#050d1a;color:#e8f4f0;min-height:100vh}
+.hide{display:none!important}
+/* NAV */
+#nav{position:sticky;top:0;z-index:99;background:rgba(5,13,26,.97);border-bottom:1px solid rgba(0,200,150,.2);padding:0 14px;height:56px;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+#nav .logo{font-size:1.2rem;font-weight:900;color:#00C896;cursor:pointer;letter-spacing:2px}
+#nav .logo b{color:#fff}
+#nav .tabs{display:flex;gap:3px;flex-wrap:wrap}
+#nav .tabs button{padding:5px 10px;border-radius:7px;border:none;background:transparent;color:rgba(232,244,240,.5);font-size:.82rem;cursor:pointer}
+#nav .tabs button.on{color:#00C896;background:rgba(0,200,150,.12)}
+#nav .right{display:flex;align-items:center;gap:6px}
+#nav .av{width:32px;height:32px;border-radius:50%;background:#00C896;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#050d1a}
+#nav .xbtn{padding:5px 10px;border-radius:7px;border:1px solid rgba(255,79,106,.3);background:transparent;color:rgba(255,79,106,.7);font-size:.78rem;cursor:pointer}
+/* PAGES */
+.pg{display:none;padding:20px 14px;max-width:960px;margin:0 auto}
+.pg.on{display:block}
+/* CARDS */
+.card{background:rgba(10,22,40,.9);border:1px solid rgba(0,200,150,.18);border-radius:14px;padding:20px;margin-bottom:14px}
+.card-p{background:rgba(60,20,120,.2);border:1px solid rgba(124,58,237,.25);border-radius:14px;padding:20px;margin-bottom:14px}
+/* FORM */
+.lbl{display:block;font-size:.78rem;color:rgba(232,244,240,.5);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.inp{width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid rgba(0,200,150,.2);background:rgba(255,255,255,.05);color:#e8f4f0;font-size:.93rem;outline:none;margin-bottom:12px}
+.inp:focus{border-color:#00C896;box-shadow:0 0 0 3px rgba(0,200,150,.1)}
+.inp.ok{border-color:#00C896}
+.inp.bad{border-color:#ff4f6a}
+/* BUTTONS */
+.btn{width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(135deg,#00C896,#009d77);color:#050d1a;font-weight:700;font-size:.95rem;cursor:pointer;margin-bottom:8px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn2{padding:10px 20px;border-radius:10px;border:1.5px solid #00C896;background:transparent;color:#00C896;font-weight:600;font-size:.9rem;cursor:pointer}
+.btn-p{width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-weight:700;font-size:.95rem;cursor:pointer;margin-bottom:8px}
+/* ALERTS */
+.err{background:rgba(255,79,106,.1);border:1px solid rgba(255,79,106,.3);color:#ff4f6a;padding:10px 14px;border-radius:10px;font-size:.84rem;margin-bottom:10px}
+.warn{background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.2);color:#f5c842;padding:10px 14px;border-radius:10px;font-size:.84rem;margin-bottom:10px}
+.succ{background:rgba(0,200,150,.1);border:1px solid rgba(0,200,150,.25);color:#00C896;padding:10px 14px;border-radius:10px;font-size:.84rem;margin-bottom:10px}
+/* BADGE */
+.bdg{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:600}
+.bg{background:rgba(0,200,150,.12);color:#00C896;border:1px solid rgba(0,200,150,.25)}
+.by{background:rgba(245,200,66,.1);color:#f5c842;border:1px solid rgba(245,200,66,.25)}
+.br{background:rgba(255,79,106,.1);color:#ff4f6a;border:1px solid rgba(255,79,106,.25)}
+.bp{background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)}
+/* GRID */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+/* STAT */
+.stat{background:rgba(10,22,40,.9);border:1px solid rgba(0,200,150,.18);border-radius:12px;padding:16px;text-align:center}
+.stat .num{font-size:1.5rem;font-weight:900;color:#00C896}
+.stat .lbl{font-size:.7rem;color:rgba(232,244,240,.5);margin-top:2px;text-transform:uppercase}
+/* QUIZ */
+.qbtn{width:100%;padding:13px 15px;border-radius:11px;border:1.5px solid rgba(0,200,150,.18);background:rgba(255,255,255,.03);color:#e8f4f0;font-size:.92rem;text-align:left;cursor:pointer;margin-bottom:9px;display:flex;align-items:center;gap:10px}
+.qbtn:hover:not(:disabled){border-color:#00C896;background:rgba(0,200,150,.07)}
+.qbtn.ok{border-color:#00C896!important;background:rgba(0,200,150,.14)!important;color:#00C896}
+.qbtn.no{border-color:#ff4f6a!important;background:rgba(255,79,106,.1)!important;color:#ff4f6a}
+.qbtn:disabled{cursor:default}
+.ql{font-size:.72rem;font-weight:700;background:rgba(255,255,255,.07);padding:3px 7px;border-radius:5px;flex-shrink:0;color:rgba(232,244,240,.5)}
+/* TIMER */
+.tw{position:relative;width:58px;height:58px;flex-shrink:0}
+.tn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:900}
+/* CHAT */
+#chatbox{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:3px;min-height:200px;max-height:calc(100vh - 280px)}
+.msg{display:flex;flex-direction:column}
+.msg.u{align-items:flex-end}
+.msg.b{align-items:flex-start}
+.bub{max-width:82%;padding:10px 14px;border-radius:16px;font-size:.9rem;line-height:1.55;word-break:break-word;white-space:pre-wrap}
+.bub.u{background:linear-gradient(135deg,#00C896,#009d77);color:#050d1a;border-bottom-right-radius:3px}
+.bub.b{background:rgba(255,255,255,.06);border:1px solid rgba(0,200,150,.18);border-bottom-left-radius:3px}
+.ts{font-size:.67rem;color:rgba(232,244,240,.45);margin-top:2px}
+/* STRENGTH */
+.sbar{height:4px;border-radius:2px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:4px;margin-bottom:6px}
+.sfill{height:100%;border-radius:2px;transition:width .3s,background .3s;width:0}
+.rq{display:flex;align-items:center;gap:5px;font-size:.75rem;margin-bottom:3px}
+.rd{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0}
+.rd.ok{background:#00C896}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;padding:8px 12px;font-size:.74rem;color:rgba(232,244,240,.5);text-transform:uppercase;border-bottom:1px solid rgba(0,200,150,.15)}
+.tbl td{padding:10px 12px;border-bottom:1px solid rgba(0,200,150,.05);font-size:.87rem}
+/* LB ROW */
+.lbr{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid rgba(0,200,150,.1)}
+.lbr:last-child{border-bottom:none}
+.mav{width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,#00C896,#007a5e);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;color:#050d1a;flex-shrink:0}
+/* ANN */
+.ann{border-left:3px solid #00C896;padding:12px 15px;border-radius:0 11px 11px 0;background:rgba(0,200,150,.04)}
+/* TOGGLE */
+.tog{display:flex;background:rgba(255,255,255,.04);border-radius:10px;padding:3px;margin-bottom:16px}
+.tog button{flex:1;padding:9px;border-radius:8px;border:none;cursor:pointer;font-size:.88rem;font-weight:600;background:transparent;color:rgba(232,244,240,.5)}
+.tog button.on{background:#00C896;color:#050d1a}
+/* FEAT ROW */
+.fr{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;background:rgba(0,200,150,.05);border:1px solid rgba(0,200,150,.1);margin-bottom:9px}
+/* DIVIDER */
+.div{height:1px;background:rgba(0,200,150,.15);margin:15px 0}
+/* BIG LOGO */
+.biglogo{font-size:2.5rem;font-weight:900;color:#00C896;letter-spacing:4px;line-height:1}
+.biglogo b{color:#fff}
+/* PROG */
+.pb{height:5px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.pf{height:100%;border-radius:3px;background:linear-gradient(90deg,#00C896,#00f5b8);transition:width .5s}
+/* ASTAT */
+.as{text-align:center;padding:15px;border-radius:12px;background:rgba(100,30,200,.1);border:1px solid rgba(124,58,237,.18)}
+.as .n{font-size:1.8rem;font-weight:900;color:#a78bfa}
+.as .l{font-size:.7rem;color:rgba(232,244,240,.5);margin-top:3px;text-transform:uppercase}
+/* PASS WRAP */
+.pw{position:relative}
+.pw .inp{padding-right:42px}
+.eye{position:absolute;right:11px;top:50%;transform:translateY(-65%);background:none;border:none;cursor:pointer;font-size:.95rem}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo" onclick="go('portal')">YOUR<b>WAY</b></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="right">
+    <div class="av" id="av">U</div>
+    <button class="xbtn" onclick="logout()">Exit</button>
+  </div>
+</nav>
+
+<!-- AUTH -->
+<div id="authPage" style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px">
+  <div style="width:100%;max-width:410px">
+
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:22px">
+      <div class="biglogo">YOUR<b>WAY</b></div>
+      <div style="color:rgba(232,244,240,.5);font-size:.87rem;margin-top:6px">Pakistan's Premier Educational Platform 🇵🇰</div>
+      <div style="display:flex;justify-content:center;gap:5px;margin-top:10px;flex-wrap:wrap">
+        <span class="bdg bg">📚 GK Quizzes</span>
+        <span class="bdg by">⚡ Current Affairs</span>
+        <span class="bdg bg">🏆 Leaderboard</span>
+      </div>
+    </div>
+
+    <!-- Student login card -->
+    <div class="card" id="studentCard">
+      <div class="tog">
+        <button class="on" id="tsu" onclick="setMode('signup')">✏️ Sign Up</button>
+        <button id="tli" onclick="setMode('login')">🔑 Login</button>
+      </div>
+      <div class="warn hide" id="liWarn">🔐 Only registered students can login. New here? Switch to Sign Up!</div>
+      <div>
+        <label class="lbl">Full Name</label>
+        <input class="inp" id="aName" placeholder="e.g. Ayesha Malik" oninput="nameCheck(this)">
+        <div class="warn hide" id="nameHint" style="font-size:.75rem;padding:6px 10px">⚠️ Name must match exactly as you signed up</div>
+      </div>
+      <div>
+        <label class="lbl" style="display:flex;justify-content:space-between">
+          <span>Password</span><span id="strLbl" style="font-size:.73rem;font-weight:700"></span>
+        </label>
+        <div class="pw">
+          <input class="inp" id="aPass" type="password" placeholder="6 chars: letters+numbers (e.g. Ali786)" maxlength="6" oninput="passCheck(this)">
+          <button class="eye" onclick="toggleEye()">👁️</button>
+        </div>
+        <div class="sbar"><div class="sfill" id="sfill"></div></div>
+        <div id="reqs">
+          <div class="rq"><div class="rd" id="r1"></div><span id="r1t" style="color:rgba(232,244,240,.5)">Exactly 6 characters (0/6)</span></div>
+          <div class="rq"><div class="rd" id="r2"></div><span id="r2t" style="color:rgba(232,244,240,.5)">At least 1 letter (a-z)</span></div>
+          <div class="rq"><div class="rd" id="r3"></div><span id="r3t" style="color:rgba(232,244,240,.5)">At least 1 number (0-9)</span></div>
+        </div>
+      </div>
+      <div class="err hide" id="authErr"></div>
+      <button class="btn" id="authBtn" onclick="doAuth()">Create My Account →</button>
+      <div class="div"></div>
+      <div style="display:flex;justify-content:space-around;margin-bottom:12px">
+        <div style="text-align:center"><div style="font-size:1.1rem">📚</div><div style="font-size:.68rem;color:rgba(232,244,240,.5);margin-top:2px">40 Questions</div></div>
+        <div style="text-align:center"><div style="font-size:1.1rem">⏱️</div><div style="font-size:.68rem;color:rgba(232,244,240,.5);margin-top:2px">15s Timer</div></div>
+        <div style="text-align:center"><div style="font-size:1.1rem">🤖</div><div style="font-size:.68rem;color:rgba(232,244,240,.5);margin-top:2px">Real AI</div></div>
+      </div>
+      <div style="text-align:center">
+        <button onclick="showAdm()" style="background:none;border:none;color:rgba(100,50,200,.35);cursor:pointer;font-size:.72rem">🛡️ Admin Access</button>
+      </div>
+    </div>
+
+    <!-- Admin card -->
+    <div class="card-p hide" id="adminCard">
+      <div style="text-align:center;margin-bottom:18px">
+        <div style="font-size:2.5rem;margin-bottom:5px">🛡️</div>
+        <div style="font-size:1.1rem;font-weight:900;color:#a78bfa;letter-spacing:3px">ADMIN ACCESS</div>
+        <div style="color:rgba(232,244,240,.5);font-size:.8rem;margin-top:3px">Restricted — Authorized Only</div>
+      </div>
+      <label class="lbl" style="color:#a78bfa">Admin Username</label>
+      <input class="inp" id="admU" placeholder="admin" style="border-color:rgba(124,58,237,.3)">
+      <label class="lbl" style="color:#a78bfa">Admin Password</label>
+      <input class="inp" id="admP" type="password" placeholder="Password" style="border-color:rgba(124,58,237,.3)">
+      <div class="warn" style="font-size:.77rem;margin-bottom:10px">💡 Username: admin or Admin — both work!</div>
+      <div class="err hide" id="admErr"></div>
+      <button class="btn-p" onclick="doAdm()">Access Admin Panel →</button>
+      <button onclick="hideAdm()" style="background:none;border:none;color:rgba(232,244,240,.45);cursor:pointer;font-size:.85rem;margin-top:8px;width:100%;text-align:center">← Back to Student Login</button>
+    </div>
+
+    <div style="text-align:center;margin-top:12px;color:rgba(232,244,240,.4);font-size:.76rem">© 2025 YOUR WAY • Made for Pakistani Students 🇵🇰</div>
+  </div>
+</div>
+
+<!-- PAGES CONTAINER -->
+<div id="pagesWrap" class="hide">
+
+  <!-- PORTAL -->
+  <div class="pg" id="pgPortal">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="color:rgba(232,244,240,.5);font-size:.8rem;margin-bottom:2px">Welcome back 👋</div>
+        <div style="font-size:1.5rem;font-weight:700;color:#fff" id="pHello">Hello!</div>
+        <div style="color:rgba(232,244,240,.5);font-size:.8rem;margin-top:3px" id="pJoined"></div>
+      </div>
+      <button class="btn2" onclick="go('quiz')">⚡ Take a Quiz</button>
+    </div>
+    <div class="g4" id="pStats"></div>
+    <div class="g2">
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px">📋 Recent Quizzes</div>
+        <div id="pHistory"></div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px">📌 Study Tips</div>
+        <div id="pTips"></div>
+      </div>
+    </div>
+    <div class="g3" id="pQuick" style="margin-top:12px"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="pg" id="pgQuiz">
+    <div id="qStart"></div>
+    <div id="qPlay" class="hide"></div>
+    <div id="qResult" class="hide"></div>
+  </div>
+
+  <!-- ANNOUNCEMENTS -->
+  <div class="pg" id="pgAnnouncements">
+    <div style="font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:4px">Announcements</div>
+    <div style="color:rgba(232,244,240,.5);margin-bottom:18px;font-size:.87rem">Latest news, events and top performers.</div>
+    <div class="g2">
+      <div id="annList"></div>
+      <div class="card" style="align-self:start">
+        <div style="font-weight:700;margin-bottom:12px">🏆 Monthly Top Students</div>
+        <div id="lbList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="pg" id="pgChat" style="display:none;flex-direction:column;height:calc(100vh - 56px);padding:12px 14px;max-width:740px;margin:0 auto">
+    <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 15px;margin-bottom:10px">
+      <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#00C896,#007a5e);display:flex;align-items:center;justify-content:center;font-size:1.1rem">🤖</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:.93rem">YOUR WAY Assistant</div>
+        <div style="font-size:.74rem;color:#00C896">● Powered by Claude AI • Pakistan Expert</div>
+      </div>
+      <span class="bdg bg">🧠 Real AI</span>
+    </div>
+    <div id="chatbox"></div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 6px" id="suggs"></div>
+    <div style="display:flex;gap:7px">
+      <input class="inp" id="cInp" placeholder="Ask anything about Pakistan GK..." style="flex:1;margin-bottom:0" onkeydown="if(event.key==='Enter')doChat()">
+      <button class="btn2" onclick="doChat()" id="cBtn" style="white-space:nowrap;padding:11px 16px">Send →</button>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="pg" id="pgAdmin">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <span class="bdg bp">🛡️ Admin Only</span>
+      <span style="font-size:.77rem;color:rgba(232,244,240,.5)" id="admDate"></span>
+    </div>
+    <div style="font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:4px">Admin Control Panel</div>
+    <div style="color:rgba(232,244,240,.5);font-size:.82rem;margin-bottom:18px">Real-time student data — hidden from all students</div>
+    <div class="g4" id="admStats" style="margin-bottom:16px"></div>
+    <div class="card-p" style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <div style="font-weight:700;color:#a78bfa">👥 Registered Students — <span id="totCount" style="color:#00C896">0</span> total</div>
+        <input class="inp" id="sSearch" placeholder="🔍 Search..." oninput="filterSt()" style="max-width:190px;padding:7px 11px;font-size:.82rem;border-color:rgba(124,58,237,.3);margin-bottom:0">
+      </div>
+      <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>#</th><th>Name</th><th>Joined</th><th>Status</th></tr></thead><tbody id="stTable"></tbody></table></div>
+    </div>
+    <div class="g3">
+      <div class="card-p">
+        <div style="font-weight:700;color:#a78bfa;margin-bottom:8px">🔐 Security</div>
+        <div style="font-size:.82rem;color:rgba(232,244,240,.5);line-height:1.9">✅ Login for registered users only<br>✅ Passwords hashed<br>✅ 6-char strong password<br>✅ Show/hide toggle<br>✅ Live strength meter</div>
+      </div>
+      <div class="card-p">
+        <div style="font-weight:700;color:#a78bfa;margin-bottom:8px">📋 Admin Credentials</div>
+        <div style="font-size:.82rem;color:rgba(232,244,240,.5);line-height:1.9">Username: <code style="color:#e8f4f0">admin</code><br>Password: <code style="color:#e8f4f0">YourWay@786</code><br><span style="color:#ff4f6a;font-size:.75rem">⚠️ Change in index.html</span></div>
+      </div>
+      <div class="card-p">
+        <div style="font-weight:700;color:#a78bfa;margin-bottom:8px">📊 Platform</div>
+        <div style="font-size:.82rem;color:rgba(232,244,240,.5);line-height:1.9">40 questions total<br>20 random per quiz<br>15s per question<br>7 categories<br>Real AI chat</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+var AU="admin", AP="YourWay@786";
+
+/* ===== STATE ===== */
+var cUser=null, mode="signup";
+var db=[], quizLog=[], chatH=[];
+var qList=[], qIdx=0, qScore=0, qTmr=null, qLeft=15, qDone=false;
+
+/* ===== DATA ===== */
+var QS=[
+  {q:"What is the capital of Pakistan?",o:["Lahore","Karachi","Islamabad","Peshawar"],a:2,c:"Basics"},
+  {q:"Year Pakistan gained independence?",o:["1945","1947","1949","1952"],a:1,c:"History"},
+  {q:"Who founded Pakistan?",o:["Allama Iqbal","Liaquat Ali Khan","Quaid-e-Azam Muhammad Ali Jinnah","Zulfikar Bhutto"],a:2,c:"History"},
+  {q:"National language of Pakistan?",o:["Punjabi","Sindhi","Urdu","Pashto"],a:2,c:"Basics"},
+  {q:"Largest province by area?",o:["Punjab","Sindh","KPK","Balochistan"],a:3,c:"Geography"},
+  {q:"Currency of Pakistan?",o:["Rupee","Taka","Dinar","Dirham"],a:0,c:"Basics"},
+  {q:"National bird of Pakistan?",o:["Eagle","Parrot","Chukar Partridge","Peacock"],a:2,c:"Basics"},
+  {q:"National flower of Pakistan?",o:["Rose","Jasmine","Sunflower","Tulip"],a:1,c:"Basics"},
+  {q:"K2 is in which mountain range?",o:["Himalayas","Karakoram","Hindu Kush","Sulaiman"],a:1,c:"Geography"},
+  {q:"Longest river in Pakistan?",o:["Ravi","Chenab","Jhelum","Indus"],a:3,c:"Geography"},
+  {q:"Badshahi Mosque is in which city?",o:["Islamabad","Karachi","Lahore","Multan"],a:2,c:"Geography"},
+  {q:"Thar Desert is in which province?",o:["Punjab","Balochistan","Sindh","KPK"],a:2,c:"Geography"},
+  {q:"Karakoram Highway connects Pakistan with?",o:["India","Afghanistan","China","Iran"],a:2,c:"Geography"},
+  {q:"Mohenjo-daro is in which province?",o:["Punjab","Sindh","Balochistan","KPK"],a:1,c:"Geography"},
+  {q:"Country with longest border with Pakistan?",o:["India","China","Afghanistan","Iran"],a:2,c:"Geography"},
+  {q:"Gwadar Port is on which sea?",o:["Red Sea","Arabian Sea","Bay of Bengal","Caspian Sea"],a:1,c:"Geography"},
+  {q:"Pakistan\'s first Prime Minister?",o:["Ayub Khan","Liaquat Ali Khan","Iskander Mirza","Zulfikar Bhutto"],a:1,c:"History"},
+  {q:"National anthem written by?",o:["Allama Iqbal","Hafeez Jalandhari","Faiz Ahmed Faiz","Josh Malihabadi"],a:1,c:"History"},
+  {q:"Year of Pakistan\'s first nuclear tests?",o:["1996","1998","2000","2002"],a:1,c:"History"},
+  {q:"Pakistan became a Republic in?",o:["1947","1952","1956","1962"],a:2,c:"History"},
+  {q:"First President of Pakistan?",o:["Ayub Khan","Liaquat Ali Khan","Iskander Mirza","Yahya Khan"],a:2,c:"History"},
+  {q:"Pakistani Nobel Prize winner in Physics?",o:["Dr. A.Q. Khan","Dr. Abdus Salam","Dr. Samar Mubarakmand","Dr. Adeeb Rizvi"],a:1,c:"History"},
+  {q:"PM of Pakistan after Feb 2024 elections?",o:["Imran Khan","Shehbaz Sharif","Bilawal Bhutto","Nawaz Sharif"],a:1,c:"Current Affairs"},
+  {q:"SCO Summit Oct 2024 was held in?",o:["Lahore","Karachi","Islamabad","Peshawar"],a:2,c:"Current Affairs"},
+  {q:"Pakistan\'s first lunar mission?",o:["iCube-Qamar","PakSat-1","SUPARCO-1","Moon-Pak"],a:0,c:"Current Affairs"},
+  {q:"Pakistan Army Chief as of 2024?",o:["General Bajwa","General Asim Munir","General Raheel","General Kayani"],a:1,c:"Current Affairs"},
+  {q:"Pakistan\'s population rank in world 2024?",o:["3rd","5th","7th","9th"],a:1,c:"Current Affairs"},
+  {q:"Pakistan T20 World Cup 2024 exit stage?",o:["Final","Semi-final","Super 8","Group Stage"],a:3,c:"Current Affairs"},
+  {q:"IMF bailout to Pakistan in 2023?",o:["$1 billion","$3 billion","$5 billion","$7 billion"],a:1,c:"Current Affairs"},
+  {q:"Pakistan Senate Chairman 2024?",o:["Sadiq Sanjrani","Yusuf Raza Gilani","Shehbaz Sharif","Raja Pervaiz Ashraf"],a:1,c:"Current Affairs"},
+  {q:"CPEC stands for?",o:["China-Pakistan Economic Corridor","Central Pakistan Energy Commission","China-Pak Engineering Council","Central Power Corp"],a:0,c:"Economy"},
+  {q:"Pakistan\'s largest export?",o:["Rice","Cotton and Textiles","Cement","Sugar"],a:1,c:"Economy"},
+  {q:"SUPARCO is Pakistan\'s agency for?",o:["Nuclear research","Space and atmosphere","Agriculture","Water management"],a:1,c:"Science"},
+  {q:"Pakistan\'s all-time Test run scorer?",o:["Inzamam ul Haq","Younis Khan","Javed Miandad","Babar Azam"],a:1,c:"Sports"},
+  {q:"Pakistan\'s national sport?",o:["Cricket","Hockey","Squash","Kabaddi"],a:1,c:"Sports"},
+  {q:"Arfa Karim was world\'s youngest certified?",o:["Chess grandmaster","Microsoft Certified Pro","Olympic gold medalist","Nobel laureate"],a:1,c:"Science"},
+  {q:"9th highest mountain in world (in Pakistan)?",o:["Nanga Parbat","Gasherbrum I","Broad Peak","Tirich Mir"],a:0,c:"Geography"},
+  {q:"Lahore Resolution 1940 demanded?",o:["More provinces","Independent Muslim states","Dominion status","Federalism"],a:1,c:"History"},
+  {q:"First female PM of Pakistan?",o:["Hina Rabbani Khar","Sherry Rehman","Benazir Bhutto","Fehmida Mirza"],a:2,c:"History"},
+  {q:"Pakistan\'s area in square km?",o:["696,096","796,096","881,913","602,000"],a:0,c:"Geography"}
+];
+
+var ANN=[
+  {date:"March 2025",title:"🎉 March Top Performer: Ayesha Malik!",body:"Ayesha from Lahore achieved a perfect score. Awarded YOUR WAY Gold Badge and digital certificate.",tag:"Top Student"},
+  {date:"March 2025",title:"📢 New Quiz: Current Affairs 2025",body:"New questions on latest political, economic and social events. Participate to climb the leaderboard!",tag:"New Quiz"},
+  {date:"Feb 2025",title:"🏆 February Winners Announced",body:"Bilal Hussain (Karachi) and Zara Ahmed (Islamabad) finished 1st and 2nd.",tag:"Winners"},
+  {date:"Feb 2025",title:"📋 Mock Test March 30, 2025",body:"100-question comprehensive mock test. Register via portal before March 25.",tag:"Event"}
+];
+
+var LB=[
+  {rank:1,name:"Ayesha Malik",city:"Lahore",score:98,q:15},
+  {rank:2,name:"Bilal Hussain",city:"Karachi",score:95,q:14},
+  {rank:3,name:"Zara Ahmed",city:"Islamabad",score:93,q:16},
+  {rank:4,name:"Hassan Raza",city:"Peshawar",score:91,q:12},
+  {rank:5,name:"Fatima Noor",city:"Quetta",score:89,q:13},
+  {rank:6,name:"Usman Tariq",city:"Faisalabad",score:87,q:11},
+  {rank:7,name:"Sana Butt",city:"Multan",score:85,q:10}
+];
+
+/* ===== HELPERS ===== */
+function $id(id){return document.getElementById(id);}
+function show(id){var e=$id(id);if(e){e.classList.remove('hide');if(e.style.display==='none')e.style.display='';}}
+function hide(id){var e=$id(id);if(e)e.classList.add('hide');}
+function setText(id,t){var e=$id(id);if(e)e.textContent=t;}
+function setHTML(id,h){var e=$id(id);if(e)e.innerHTML=h;}
+function hashP(p){var h=0;for(var i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h=h|0;}return h.toString(36);}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function nowT(){return new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});}
+function nowD(){return new Date().toLocaleDateString('en-PK',{month:'short',year:'numeric'});}
+function nowFull(){return new Date().toLocaleDateString('en-PK',{day:'numeric',month:'long',year:'numeric'});}
+function shortDate(){return new Date().toLocaleDateString('en-PK',{day:'numeric',month:'short'});}
+
+/* ===== PASSWORD CHECK ===== */
+function setMode(m){
+  mode=m;
+  $id('tsu').className=m==='signup'?'on':'';
+  $id('tli').className=m==='login'?'on':'';
+  if(m==='login'){show('liWarn');show('nameHint');hide('reqs');}
+  else{hide('liWarn');hide('nameHint');show('reqs');}
+  setText('authBtn',m==='signup'?'Create My Account →':'Login to My Account →');
+  $id('aPass').placeholder=m==='signup'?'6 chars: letters+numbers (e.g. Ali786)':'Your password';
+  $id('aPass').maxLength=m==='signup'?6:50;
+  $id('aName').value='';$id('aPass').value='';
+  hide('authErr');
+  $id('sfill').style.width='0';
+  setText('strLbl','');
+}
+function nameCheck(inp){inp.className='inp'+(inp.value.trim().length>2?' ok':'');}
+function passCheck(inp){
+  var p=inp.value,l=p.length===6,lt=/[a-zA-Z]/.test(p),nm=/[0-9]/.test(p),s=[l,lt,nm].filter(Boolean).length;
+  $id('r1').className='rd'+(l?' ok':'');$id('r1t').textContent='Exactly 6 characters ('+p.length+'/6)';$id('r1t').style.color=l?'#00C896':'rgba(232,244,240,.5)';
+  $id('r2').className='rd'+(lt?' ok':'');$id('r2t').style.color=lt?'#00C896':'rgba(232,244,240,.5)';
+  $id('r3').className='rd'+(nm?' ok':'');$id('r3t').style.color=nm?'#00C896':'rgba(232,244,240,.5)';
+  var cs=['transparent','#ff4f6a','#f5c842','#00C896'],ls=['','Weak','Almost','Strong ✓'];
+  $id('sfill').style.width=(s*33.3)+'%';$id('sfill').style.background=cs[s];
+  $id('strLbl').textContent=ls[s];$id('strLbl').style.color=cs[s];
+  if(mode==='signup')inp.className='inp'+(p.length===6?(l&&lt&&nm?' ok':' bad'):'');
+}
+function toggleEye(){var i=$id('aPass');i.type=i.type==='password'?'text':'password';}
+
+/* ===== AUTH ===== */
+function showErr(id,msg){var e=$id(id);e.textContent=msg;e.classList.remove('hide');}
+function showAdm(){hide('studentCard');show('adminCard');}
+function hideAdm(){show('studentCard');hide('adminCard');hide('admErr');$id('admU').value='';$id('admP').value='';}
+
+function doAuth(){
+  hide('authErr');
+  var uname=$id('aName').value.trim(),pass=$id('aPass').value;
+  if(!uname){showErr('authErr','⚠️ Please enter your full name.');return;}
+  if(mode==='signup'){
+    var l=pass.length===6,lt=/[a-zA-Z]/.test(pass),nm=/[0-9]/.test(pass);
+    if(!l||!lt||!nm){showErr('authErr','⚠️ Password must be exactly 6 characters with at least 1 letter and 1 number. E.g. Ali786');return;}
+    var ex=db.find(function(u){return u.name.toLowerCase()===uname.toLowerCase();});
+    if(ex){showErr('authErr','❌ Name already registered. Please login instead.');return;}
+    db.push({name:uname,ph:hashP(pass),joined:nowD()});
+    loginAs({name:uname,joined:nowD(),isAdmin:false});
+  } else {
+    if(!pass){showErr('authErr','⚠️ Please enter your password.');return;}
+    var f=db.find(function(u){return u.name.toLowerCase()===uname.toLowerCase();});
+    if(!f){showErr('authErr','❌ No account found. Please sign up first.');return;}
+    if(f.ph!==hashP(pass)){showErr('authErr','❌ Incorrect password. Please try again.');return;}
+    loginAs({name:f.name,joined:f.joined,isAdmin:false});
+  }
+}
+
+function doAdm(){
+  hide('admErr');
+  var u=$id('admU').value.trim(),p=$id('admP').value;
+  if(!u||!p){showErr('admErr','⚠️ Please fill both fields.');return;}
+  if(u.toLowerCase()===AU.toLowerCase()&&p===AP){loginAs({name:'Admin',isAdmin:true,joined:'System'});}
+  else{showErr('admErr','❌ Wrong credentials.\nUsername: admin | Password: YourWay@786');}
+}
+
+function loginAs(user){
+  cUser=user;
+  $id('authPage').style.display='none';
+  $id('nav').style.display='flex';
+  show('pagesWrap');
+  $id('av').textContent=user.isAdmin?'🛡':user.name[0].toUpperCase();
+  var tabs=$id('tabs');
+  if(user.isAdmin){
+    tabs.innerHTML='<button class="on" onclick="go(\'admin\')">🛡️ Admin</button>';
+    initAdmin();go('admin');
+  } else {
+    tabs.innerHTML=[['portal','🏠 Home'],['quiz','⚡ Quiz'],['announcements','📣 News'],['chat','🤖 Chat']].map(function(x){
+      return '<button id="tb-'+x[0]+'" onclick="go(\''+x[0]+'\')">'+x[1]+'</button>';
+    }).join('');
+    initPortal();initAnn();initChat();go('portal');
+  }
+}
+
+function logout(){
+  cUser=null;quizLog=[];chatH=[];
+  $id('authPage').style.display='flex';
+  $id('nav').style.display='none';
+  hide('pagesWrap');
+  $id('studentCard').classList.remove('hide');$id('adminCard').classList.add('hide');
+  $id('aName').value='';$id('aPass').value='';hide('authErr');setMode('signup');
+}
+
+function go(page){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');p.style.display='';});
+  var pg=$id('pg'+page.charAt(0).toUpperCase()+page.slice(1));
+  if(pg){pg.classList.add('on');if(page==='chat')pg.style.display='flex';}
+  document.querySelectorAll('#tabs button').forEach(function(b){b.classList.remove('on');});
+  var tb=$id('tb-'+page);if(tb)tb.classList.add('on');
+  if(page==='portal')refreshPortal();
+  if(page==='quiz')initQuiz();
+  if(page==='chat')scrollChat();
+}
+
+/* ===== PORTAL ===== */
+function initPortal(){
+  setHTML('pTips',["Read Dawn and Geo News daily","Study Pakistan constitution","Know all 4 provinces well","Review mistakes carefully","1 quiz a day = big improvement"].map(function(t){return '<div style="display:flex;gap:6px;margin-bottom:8px;font-size:.84rem;color:rgba(232,244,240,.5)"><span style="color:#00C896">→</span>'+t+'</div>';}).join(''));
+  setHTML('pQuick',[{i:'⚡',t:'Take Quiz',d:'40 Qs • 15s timer',p:'quiz'},{i:'📣',t:'Announcements',d:'Winners and news',p:'announcements'},{i:'🤖',t:'AI Chat',d:'Real AI answers',p:'chat'}].map(function(c){return '<div onclick="go(\''+c.p+'\')" style="background:rgba(10,22,40,.9);border:1px solid rgba(0,200,150,.18);border-radius:13px;padding:14px;display:flex;align-items:center;gap:11px;cursor:pointer"><div style="font-size:1.6rem">'+c.i+'</div><div><div style="font-weight:600;font-size:.88rem;margin-bottom:1px">'+c.t+'</div><div style="font-size:.74rem;color:rgba(232,244,240,.5)">'+c.d+'</div></div></div>';}).join(''));
+  refreshPortal();
+}
+
+function refreshPortal(){
+  if(!cUser)return;
+  setText('pHello','Hello, '+cUser.name+'!');
+  setText('pJoined','Joined '+cUser.joined+' • Pakistan GK awaits!');
+  var tot=quizLog.length,avg=tot?Math.round(quizLog.reduce(function(a,b){return a+b.pct;},0)/tot):0,best=tot?Math.max.apply(null,quizLog.map(function(h){return h.pct;})):0;
+  setHTML('pStats',[{l:'Quizzes',v:tot,i:'📝'},{l:'Avg Score',v:avg+'%',i:'📊'},{l:'Best',v:best+'%',i:'🏆'},{l:'Rank',v:tot?'#'+Math.max(1,8-Math.floor(avg/15)):'—',i:'🎯'}].map(function(s){return '<div class="stat"><div style="font-size:1.2rem;margin-bottom:4px">'+s.i+'</div><div class="num">'+s.v+'</div><div class="lbl">'+s.l+'</div></div>';}).join(''));
+  if(!tot){setHTML('pHistory','<div style="text-align:center;padding:18px 0"><div style="font-size:2rem;margin-bottom:7px">🎯</div><div style="color:rgba(232,244,240,.5);font-size:.85rem;margin-bottom:12px">No quizzes yet!</div><button class="btn2" onclick="go(\'quiz\')">Start Quiz</button></div>');}
+  else{setHTML('pHistory','<table class="tbl"><thead><tr><th>#</th><th>Date</th><th>Score</th><th>Grade</th></tr></thead><tbody>'+quizLog.slice(0,5).map(function(h,i){var g=h.pct>=80?'bg':h.pct>=50?'by':'br',gl=h.pct>=80?'Excellent':h.pct>=50?'Good':'Try Again';return '<tr><td style="color:rgba(232,244,240,.5)">'+(i+1)+'</td><td style="color:rgba(232,244,240,.5);font-size:.79rem">'+h.date+'</td><td style="color:#00C896;font-size:.82rem">'+h.correct+'/20</td><td><span class="bdg '+g+'">'+gl+'</span></td></tr>';}).join('')+'</tbody></table>');}
+}
+
+/* ===== QUIZ ===== */
+function initQuiz(){
+  clearInterval(qTmr);
+  qList=shuffle(QS).slice(0,20);
+  qIdx=0;qScore=0;
+  showQStart();
+}
+
+function showQStart(){
+  show('qStart');hide('qPlay');hide('qResult');
+  setHTML('qStart','<div style="max-width:540px;margin:0 auto"><div class="card"><div style="text-align:center;margin-bottom:18px"><div style="font-size:2.8rem;margin-bottom:8px">⚡</div><div style="font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:5px">Ready to Test Your Knowledge?</div><div style="color:rgba(232,244,240,.5);font-size:.88rem">Pakistan GK and Current Affairs 2025</div></div>'
+    +'<div class="fr"><span style="font-size:1.2rem">📝</span><div><div style="font-weight:600;font-size:.91rem">20 Random Questions</div><div style="color:rgba(232,244,240,.5);font-size:.78rem">From 40 questions across 7 categories</div></div></div>'
+    +'<div class="fr"><span style="font-size:1.2rem">⏱️</span><div><div style="font-weight:600;font-size:.91rem">15 Seconds Per Question</div><div style="color:rgba(232,244,240,.5);font-size:.78rem">Timer resets automatically each question</div></div></div>'
+    +'<div class="fr"><span style="font-size:1.2rem">🏆</span><div><div style="font-weight:600;font-size:.91rem">Instant Score and Grade</div><div style="color:rgba(232,244,240,.5);font-size:.78rem">See results immediately after finishing</div></div></div>'
+    +'<div style="display:flex;gap:9px;margin-top:4px"><button class="btn2" onclick="go(\'portal\')" style="flex:1">← Back</button><button class="btn" onclick="startPlay()" style="flex:2;margin-bottom:0">🚀 Start Quiz Now!</button></div>'
+    +'</div></div>');
+}
+
+function startPlay(){qIdx=0;qScore=0;showQPlay();}
+
+function showQPlay(){
+  hide('qStart');show('qPlay');hide('qResult');
+  qDone=false;qLeft=15;renderQ();startTmr();
+}
+
+var C=2*Math.PI*24;
+
+function renderQ(){
+  var q=qList[qIdx],prog=Math.round(((qIdx+1)/qList.length)*100);
+  var opts=q.o.map(function(o,i){return '<button class="qbtn" id="qo'+i+'" onclick="pick('+i+')"><span class="ql">'+String.fromCharCode(65+i)+'</span><span style="flex:1">'+o+'</span></button>';}).join('');
+  setHTML('qPlay','<div style="max-width:640px;margin:0 auto">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px">'
+      +'<div style="flex:1;margin-right:11px">'
+        +'<div style="display:flex;justify-content:space-between;font-size:.79rem;margin-bottom:4px">'
+          +'<span style="color:#00C896;font-weight:700">Q'+(qIdx+1)+'<span style="color:rgba(232,244,240,.5);font-weight:400">/'+qList.length+'</span></span>'
+          +'<span style="color:rgba(232,244,240,.5)">'+q.c+' • Score: <span style="color:#00C896">'+qScore+'</span></span>'
+        +'</div>'
+        +'<div class="pb"><div class="pf" style="width:'+prog+'%"></div></div>'
+      +'</div>'
+      +'<div class="tw">'
+        +'<svg width="58" height="58" style="transform:rotate(-90deg)">'
+          +'<circle cx="29" cy="29" r="24" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="4.5"/>'
+          +'<circle id="tc" cx="29" cy="29" r="24" fill="none" stroke="#00C896" stroke-width="4.5" stroke-dasharray="'+C.toFixed(2)+'" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dashoffset 1s linear,stroke .3s"/>'
+        +'</svg>'
+        +'<div class="tn" id="tn" style="color:#00C896">15</div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="card" style="margin-bottom:11px;background:rgba(0,200,150,.03);border-color:rgba(0,200,150,.13);padding:15px 17px">'
+      +'<div style="font-size:.69rem;color:rgba(232,244,240,.5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.8px">'+q.c+'</div>'
+      +'<div style="font-size:1rem;font-weight:600;line-height:1.6;color:#e8f4f0">'+q.q+'</div>'
+    +'</div>'
+    +'<div>'+opts+'</div>'
+    +'<div id="tuMsg" class="warn hide" style="margin-top:6px;font-size:.81rem">⏰ Time\'s up! Correct answer highlighted above.</div>'
+    +'</div>');
+}
+
+function startTmr(){
+  clearInterval(qTmr);
+  qTmr=setInterval(function(){
+    qLeft--;
+    var tc=$id('tc'),tn=$id('tn');
+    if(!tc||!tn){clearInterval(qTmr);return;}
+    var off=C-(qLeft/15)*C;
+    var col=qLeft>8?'#00C896':qLeft>4?'#f5c842':'#ff4f6a';
+    tc.setAttribute('stroke-dashoffset',off.toFixed(2));
+    tc.setAttribute('stroke',col);
+    tn.textContent=qLeft;tn.style.color=col;
+    if(qLeft<=0){clearInterval(qTmr);timeUp();}
+  },1000);
+}
+
+function timeUp(){
+  if(qDone)return;qDone=true;
+  var q=qList[qIdx];
+  var ab=$id('qo'+q.a);if(ab)ab.className='qbtn ok';
+  document.querySelectorAll('.qbtn').forEach(function(b){b.disabled=true;});
+  var m=$id('tuMsg');if(m)m.classList.remove('hide');
+  setTimeout(nextQ,1800);
+}
+
+function pick(i){
+  if(qDone)return;clearInterval(qTmr);qDone=true;
+  var q=qList[qIdx];
+  if(i===q.a){qScore++;$id('qo'+i).className='qbtn ok';}
+  else{$id('qo'+i).className='qbtn no';$id('qo'+q.a).className='qbtn ok';}
+  document.querySelectorAll('.qbtn').forEach(function(b){b.disabled=true;});
+  setTimeout(nextQ,1300);
+}
+
+function nextQ(){qIdx++;if(qIdx>=qList.length)showQResult();else showQPlay();}
+
+function showQResult(){
+  clearInterval(qTmr);
+  hide('qStart');hide('qPlay');show('qResult');
+  var pct=Math.round((qScore/qList.length)*100);
+  var ge=pct>=90?{e:'🏆',t:'Outstanding!',c:'#00C896'}:pct>=75?{e:'🌟',t:'Excellent!',c:'#00C896'}:pct>=60?{e:'👍',t:'Well Done!',c:'#f5c842'}:pct>=40?{e:'📚',t:'Keep Studying!',c:'#f5c842'}:{e:'💪',t:"Don\'t Give Up!",c:'#ff4f6a'};
+  quizLog.unshift({correct:qScore,pct:pct,date:shortDate()});
+  setHTML('qResult','<div style="max-width:460px;margin:2rem auto;padding:0 14px"><div class="card" style="text-align:center;padding:1.8rem">'
+    +'<div style="font-size:3rem;margin-bottom:8px">'+ge.e+'</div>'
+    +'<div style="font-size:2.4rem;font-weight:900;color:#00C896;line-height:1">'+pct+'%</div>'
+    +'<div style="font-weight:700;font-size:1.05rem;margin:.5rem 0;color:'+ge.c+'">'+ge.t+'</div>'
+    +'<div style="color:rgba(232,244,240,.5);margin-bottom:1.3rem;font-size:.88rem">You answered <strong style="color:#e8f4f0">'+qScore+' out of '+qList.length+'</strong> correctly</div>'
+    +'<div style="display:flex;justify-content:center;gap:2rem;margin-bottom:1.4rem">'
+      +'<div><div style="font-size:1.5rem;font-weight:900;color:#00C896">'+qScore+'</div><div style="font-size:.7rem;color:rgba(232,244,240,.5);text-transform:uppercase;margin-top:2px">Correct</div></div>'
+      +'<div><div style="font-size:1.5rem;font-weight:900;color:#ff4f6a">'+(qList.length-qScore)+'</div><div style="font-size:.7rem;color:rgba(232,244,240,.5);text-transform:uppercase;margin-top:2px">Wrong</div></div>'
+      +'<div><div style="font-size:1.5rem;font-weight:900;color:#f5c842">'+pct+'%</div><div style="font-size:.7rem;color:rgba(232,244,240,.5);text-transform:uppercase;margin-top:2px">Score</div></div>'
+    +'</div>'
+    +'<div style="display:flex;gap:9px"><button class="btn2" onclick="initQuiz()" style="flex:1">↺ Try Again</button><button class="btn" onclick="go(\'portal\')" style="flex:2;margin-bottom:0">View Portal →</button></div>'
+    +'</div></div>');
+}
+
+/* ===== ANNOUNCEMENTS ===== */
+function initAnn(){
+  setHTML('annList',ANN.map(function(a){return '<div class="card" style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:4px"><span class="bdg bg">'+a.tag+'</span><span style="font-size:.74rem;color:rgba(232,244,240,.5)">'+a.date+'</span></div><div class="ann"><div style="font-weight:700;font-size:.93rem;margin-bottom:5px">'+a.title+'</div><div style="color:rgba(232,244,240,.5);line-height:1.6;font-size:.84rem">'+a.body+'</div></div></div>';}).join(''));
+  setHTML('lbList',LB.map(function(s,i){var m=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+s.rank;return '<div class="lbr"><div style="width:24px;text-align:center;font-size:'+(i<3?'1rem':'.76rem')+'">'+m+'</div><div class="mav">'+s.name[0]+'</div><div style="flex:1"><div style="font-weight:600;font-size:.85rem">'+s.name+'</div><div style="font-size:.69rem;color:rgba(232,244,240,.5)">'+s.city+'</div></div><div style="text-align:right"><div style="color:#00C896;font-size:.82rem">'+s.score+'%</div><div style="font-size:.67rem;color:rgba(232,244,240,.5)">'+s.q+' quizzes</div></div></div>';}).join(''));
+}
+
+/* ===== CHAT ===== */
+function initChat(){
+  chatH=[];
+  var box=$id('chatbox');if(box)box.innerHTML='';
+  setHTML('suggs',['Capital of Pakistan?','Pakistan history','Quiz tips','Current PM?','What is CPEC?'].map(function(s){return '<button onclick="setSugg(\''+s+'\')" style="padding:4px 10px;border-radius:16px;border:1px solid rgba(0,200,150,.18);background:rgba(0,200,150,.04);color:rgba(232,244,240,.5);font-size:.75rem;cursor:pointer">'+s+'</button>';}).join(''));
+  var cname=cUser?cUser.name:'Student';
+  addBot('Assalam-o-Alaikum '+cname+'! 🇵🇰 I am YOUR WAY Assistant, powered by real Claude AI. Ask me anything about Pakistan — history, geography, current affairs, quiz tips or any GK question!');
+}
+function setSugg(t){$id('cInp').value=t;}
+function scrollChat(){var b=$id('chatbox');if(b)b.scrollTop=b.scrollHeight;}
+function addUser(t){var b=$id('chatbox');if(!b)return;b.innerHTML+='<div class="msg u"><div class="bub u">'+t.replace(/</g,'&lt;')+'</div><div class="ts">'+nowT()+'</div></div>';scrollChat();}
+function addBot(t){var b=$id('chatbox');if(!b)return;b.innerHTML+='<div class="msg b"><div style="font-size:.69rem;color:rgba(232,244,240,.5);margin-bottom:3px">🤖 YOUR WAY AI</div><div class="bub b">'+t.replace(/</g,'&lt;').replace(/\n/g,'<br>')+'</div><div class="ts">'+nowT()+'</div></div>';scrollChat();}
+function addTyping(){var b=$id('chatbox');if(!b)return;b.innerHTML+='<div class="msg b" id="typing"><div style="font-size:.69rem;color:rgba(232,244,240,.5);margin-bottom:3px">🤖 Thinking...</div><div class="bub b" style="padding:12px 16px"><span style="display:inline-block;animation:bounce 1.2s infinite;margin-right:3px">●</span><span style="display:inline-block;animation:bounce 1.2s .2s infinite;margin-right:3px">●</span><span style="display:inline-block;animation:bounce 1.2s .4s infinite">●</span></div></div>';scrollChat();}
+function rmTyping(){var t=$id('typing');if(t)t.remove();}
+
+/* ===== SMART AI ===== */
+function getAIReply(msg) {
+  var m = msg.toLowerCase();
+  
+  // FOUNDER / IDENTITY
+  if (m.indexOf("who made") !== -1 || m.indexOf("who created") !== -1 || m.indexOf("who launched") !== -1 || m.indexOf("who built") !== -1 || m.indexOf("founder") !== -1 || m.indexOf("who is your founder") !== -1 || m.indexOf("your creator") !== -1 || m.indexOf("made by") !== -1 || m.indexOf("created by") !== -1 || m.indexOf("developed by") !== -1 || m.indexOf("who developed") !== -1) {
+    return "YOUR WAY was founded and launched by DEAR SAJID. He created this platform to help Pakistani students excel in General Knowledge and Current Affairs. I am proud to serve every student on this amazing platform!";
+  }
+  if (m.indexOf("who are you") !== -1 || m.indexOf("what are you") !== -1 || m.indexOf("introduce yourself") !== -1 || m.indexOf("your name") !== -1) {
+    return "I am YOUR WAY Assistant - a smart AI tutor created by DEAR SAJID for Pakistani students! I can help you with Pakistan General Knowledge, Current Affairs, History, Geography, Constitution and much more. Ask me anything! Pakistan Zindabad!";
+  }
+  if (m.indexOf("your way") !== -1 && (m.indexOf("about") !== -1 || m.indexOf("what is") !== -1)) {
+    return "YOUR WAY is Pakistan's premier educational platform, founded by DEAR SAJID. It offers 40 GK quiz questions, Current Affairs 2024-2025, 15-second timed quizzes, a student performance portal, monthly leaderboard, and me - your AI assistant! Our mission: Help every Pakistani student succeed!";
+  }
+
+  // GREETINGS
+  if (m.indexOf("hello") !== -1 || m.indexOf("hi") !== -1 || m.indexOf("salam") !== -1 || m.indexOf("assalam") !== -1 || m.indexOf("good morning") !== -1 || m.indexOf("hey") !== -1) {
+    return "Wa Alaikum Assalam! Welcome to YOUR WAY! I am here to help you master Pakistan GK. Ask me anything - history, geography, current affairs, or quiz tips. Let us learn together!";
+  }
+  if (m.indexOf("thank") !== -1 || m.indexOf("shukriya") !== -1 || m.indexOf("jazak") !== -1) {
+    return "You are most welcome! Keep learning and keep growing. Remember - every question you ask brings you closer to the top of the leaderboard! Best of luck with your studies!";
+  }
+
+  // CAPITAL
+  if (m.indexOf("capital") !== -1) {
+    return "The capital of Pakistan is ISLAMABAD. It was built in the 1960s to replace Karachi as the federal capital. It is located in the Pothohar Plateau in northern Pakistan.";
+  }
+
+  // NATIONAL THINGS
+  if (m.indexOf("national language") !== -1 || m.indexOf("official language") !== -1 || (m.indexOf("urdu") !== -1 && m.indexOf("language") !== -1)) {
+    return "URDU is the national language of Pakistan. Although only about 8% of Pakistanis speak it as a first language, it serves as the common language across all provinces and unites the nation.";
+  }
+  if (m.indexOf("national bird") !== -1 || m.indexOf("chukar") !== -1 || m.indexOf("chakor") !== -1) {
+    return "The national bird of Pakistan is the CHUKAR PARTRIDGE (Chakor). It is celebrated in Pakistani poetry and culture for its beauty.";
+  }
+  if (m.indexOf("national flower") !== -1 || m.indexOf("jasmine") !== -1 || m.indexOf("motia") !== -1) {
+    return "The national flower of Pakistan is JASMINE (Motia). It is loved for its beautiful fragrance and is widely used in garlands across Pakistan.";
+  }
+  if (m.indexOf("national animal") !== -1 || m.indexOf("markhor") !== -1) {
+    return "The national animal of Pakistan is the MARKHOR - a large wild goat found in the mountains of northern Pakistan. It appears on the coat of arms of Pakistan.";
+  }
+  if (m.indexOf("national sport") !== -1 || (m.indexOf("sport") !== -1 && m.indexOf("pakistan") !== -1 && m.indexOf("national") !== -1)) {
+    return "The national sport of Pakistan is FIELD HOCKEY. Pakistan has won the Hockey World Cup 4 times (1971, 1978, 1982, 1994) - the most by any country in history!";
+  }
+  if (m.indexOf("national anthem") !== -1 || m.indexOf("qaumi tarana") !== -1) {
+    return "Pakistan's national anthem (Qaumi Tarana) was written by HAFEEZ JALANDHARI. The music was composed by Ahmed Ghulamali Chagla. It was officially adopted in August 1954.";
+  }
+  if (m.indexOf("currency") !== -1 || m.indexOf("rupee") !== -1) {
+    return "The currency of Pakistan is the PAKISTANI RUPEE (PKR). It is issued by the State Bank of Pakistan.";
+  }
+
+  // POPULATION / AREA
+  if (m.indexOf("population") !== -1 || m.indexOf("how many people") !== -1) {
+    return "Pakistan's population is approximately 240 million people (2024 estimate) - making it the 5th most populous country in the world, after China, India, USA and Indonesia.";
+  }
+  if (m.indexOf("area") !== -1 || m.indexOf("square kilo") !== -1 || m.indexOf("how big") !== -1 || m.indexOf("size of") !== -1) {
+    return "Pakistan covers an area of approximately 881,913 square kilometers. It is the 33rd largest country in the world by total area.";
+  }
+
+  // GEOGRAPHY
+  if (m.indexOf("largest province") !== -1 || m.indexOf("biggest province") !== -1) {
+    return "BALOCHISTAN is the largest province of Pakistan by area - covering about 44% of Pakistan's total land area. Its capital is Quetta.";
+  }
+  if (m.indexOf("k2") !== -1 || m.indexOf("second highest") !== -1 || m.indexOf("karakoram") !== -1) {
+    return "K2 (8,611 metres) is Pakistan's highest mountain and the WORLD'S SECOND HIGHEST PEAK. It is located in the Karakoram Range in Gilgit-Baltistan. It is nicknamed the Savage Mountain due to its extreme difficulty for climbers.";
+  }
+  if (m.indexOf("longest river") !== -1 || m.indexOf("indus river") !== -1 || (m.indexOf("river") !== -1 && m.indexOf("longest") !== -1)) {
+    return "The INDUS RIVER is the longest river in Pakistan - stretching about 3,180 km. It originates in Tibet, flows through Kashmir and Pakistan, and empties into the Arabian Sea near Karachi. It gives Pakistan its name!";
+  }
+  if (m.indexOf("badshahi") !== -1 || (m.indexOf("mosque") !== -1 && m.indexOf("lahore") !== -1)) {
+    return "The BADSHAHI MOSQUE is located in LAHORE. It was built by Mughal Emperor Aurangzeb in 1673. It is one of the largest mosques in the world and a masterpiece of Mughal architecture.";
+  }
+  if (m.indexOf("thar") !== -1 || (m.indexOf("desert") !== -1 && m.indexOf("pakistan") !== -1)) {
+    return "The THAR DESERT is located in SINDH province of Pakistan (also extending into Rajasthan, India). It is the world's 18th largest desert.";
+  }
+  if (m.indexOf("karakoram highway") !== -1 || m.indexOf("kkh") !== -1) {
+    return "The KARAKORAM HIGHWAY (KKH) connects Pakistan with CHINA. Running from Abbottabad to Kashgar, it is the highest paved international road in the world at 1,300 km!";
+  }
+  if (m.indexOf("gwadar") !== -1) {
+    return "GWADAR PORT is located on the ARABIAN SEA in Balochistan. It is a deep-sea port and a key part of CPEC (China-Pakistan Economic Corridor). It is Pakistan's window to the world!";
+  }
+  if (m.indexOf("mohenjo") !== -1 || m.indexOf("indus valley") !== -1) {
+    return "MOHENJO-DARO is located in SINDH province. It is one of the largest settlements of the ancient Indus Valley Civilization, dating back to around 2500 BCE. It is a UNESCO World Heritage Site.";
+  }
+  if (m.indexOf("nanga parbat") !== -1 || m.indexOf("killer mountain") !== -1) {
+    return "NANGA PARBAT (8,126m) is the 9th highest mountain in the world. It is located in Gilgit-Baltistan, Pakistan. It is nicknamed the Killer Mountain due to its high fatality rate for climbers.";
+  }
+  if (m.indexOf("province") !== -1 || m.indexOf("how many province") !== -1) {
+    return "Pakistan has 4 PROVINCES: 1) Punjab (most populous, capital Lahore), 2) Sindh (capital Karachi), 3) Khyber Pakhtunkhwa KPK (capital Peshawar), 4) Balochistan - largest by area (capital Quetta). Plus Islamabad as the federal capital territory.";
+  }
+  if (m.indexOf("mountain") !== -1 || m.indexOf("peak") !== -1) {
+    return "Pakistan has some of the world's highest mountains! K2 (8,611m) is the 2nd highest, Nanga Parbat (8,126m) is the 9th highest, and Gasherbrum I (8,080m) is the 11th highest. The Karakoram, Himalayan and Hindu Kush ranges all pass through Pakistan!";
+  }
+  if (m.indexOf("river") !== -1) {
+    return "Pakistan has major rivers including: Indus (longest), Jhelum, Chenab, Ravi, Sutlej and Kabul. These rivers form the backbone of Pakistan's agriculture. The Indus River gives Pakistan its name!";
+  }
+
+  // HISTORY
+  if (m.indexOf("independence") !== -1 || m.indexOf("14 august") !== -1 || m.indexOf("1947") !== -1) {
+    return "Pakistan gained independence on 14th AUGUST 1947 from British rule, following the partition of British India. It was a historic moment that millions had struggled and sacrificed for!";
+  }
+  if (m.indexOf("jinnah") !== -1 || m.indexOf("quaid") !== -1 || (m.indexOf("founder") !== -1 && m.indexOf("pakistan") !== -1)) {
+    return "QUAID-E-AZAM MUHAMMAD ALI JINNAH is the founder of Pakistan. He was a brilliant lawyer and statesman who led the Muslim League and negotiated Pakistan's creation. He became Pakistan's first Governor-General and is called Baba-e-Qaum (Father of the Nation).";
+  }
+  if (m.indexOf("first prime minister") !== -1 || m.indexOf("liaquat") !== -1) {
+    return "LIAQUAT ALI KHAN was Pakistan's first Prime Minister. He served from 1947 until his assassination in 1951. He was a close associate of Quaid-e-Azam Jinnah and is called Shaheed-e-Millat.";
+  }
+  if (m.indexOf("first president") !== -1 || m.indexOf("iskander mirza") !== -1) {
+    return "ISKANDER MIRZA was Pakistan's first President. He served from 1956 to 1958, when he was removed by General Ayub Khan.";
+  }
+  if (m.indexOf("republic") !== -1 || m.indexOf("1956") !== -1) {
+    return "Pakistan became a REPUBLIC on 23rd MARCH 1956 when its first constitution was adopted. That is why 23rd March is celebrated as Pakistan Day (Republic Day)!";
+  }
+  if (m.indexOf("nuclear") !== -1 || m.indexOf("atomic") !== -1 || m.indexOf("1998") !== -1 || m.indexOf("chagai") !== -1) {
+    return "Pakistan conducted its first NUCLEAR TESTS on 28th MAY 1998 at Chagai, Balochistan - in response to India's tests. Pakistan became the 7th nuclear power in the world and the first in the Muslim world!";
+  }
+  if (m.indexOf("abdus salam") !== -1 || m.indexOf("nobel prize") !== -1) {
+    return "DR. ABDUS SALAM was the first Pakistani to win a Nobel Prize. He won the Nobel Prize in Physics in 1979 for his work on electroweak unification theory. He was born in Jhang, Punjab.";
+  }
+  if (m.indexOf("lahore resolution") !== -1 || m.indexOf("1940") !== -1 || m.indexOf("pakistan resolution") !== -1) {
+    return "The LAHORE RESOLUTION was passed on 23rd MARCH 1940 at the All-India Muslim League session in Lahore. It demanded independent states for Muslims - the foundation of the idea of Pakistan!";
+  }
+  if (m.indexOf("benazir") !== -1 || m.indexOf("first female pm") !== -1 || m.indexOf("female prime minister") !== -1) {
+    return "BENAZIR BHUTTO was the first female Prime Minister of Pakistan and the first female head of government in any Muslim-majority country. She served two terms (1988-1990 and 1993-1996). She was tragically assassinated in 2007.";
+  }
+
+  // CURRENT AFFAIRS
+  if (m.indexOf("current pm") !== -1 || m.indexOf("prime minister") !== -1 || m.indexOf("shehbaz") !== -1) {
+    return "SHEHBAZ SHARIF is the current Prime Minister of Pakistan. He formed the government after the February 2024 general elections. He is the leader of PML-N and brother of former PM Nawaz Sharif.";
+  }
+  if (m.indexOf("army chief") !== -1 || m.indexOf("coas") !== -1 || m.indexOf("asim munir") !== -1) {
+    return "GENERAL SYED ASIM MUNIR is the current Chief of Army Staff (COAS) of Pakistan. He was appointed in November 2022. He previously served as Director-General of ISI.";
+  }
+  if (m.indexOf("sco") !== -1 || m.indexOf("shanghai cooperation") !== -1) {
+    return "Pakistan hosted the SCO (Shanghai Cooperation Organisation) Summit in ISLAMABAD in October 2024. It was a major diplomatic event bringing together leaders from Russia, China, India and other member states.";
+  }
+  if (m.indexOf("icube") !== -1 || m.indexOf("lunar mission") !== -1 || m.indexOf("moon mission") !== -1 || m.indexOf("qamar") !== -1) {
+    return "Pakistan's first lunar mission is ICUBE-QAMAR. It was launched in May 2024 aboard China's Chang'e-6 mission. It was developed by the Institute of Space Technology (IST) Islamabad - a proud achievement for Pakistan!";
+  }
+  if (m.indexOf("senate chairman") !== -1 || m.indexOf("gilani") !== -1) {
+    return "YUSUF RAZA GILANI was elected as Chairman of the Pakistan Senate in 2024. He is a senior PPP leader and former Prime Minister of Pakistan (2008-2012).";
+  }
+  if (m.indexOf("t20") !== -1 || m.indexOf("world cup 2024") !== -1 || m.indexOf("cricket 2024") !== -1) {
+    return "Pakistan had a disappointing T20 World Cup 2024 - they were eliminated in the GROUP STAGE, failing to reach the Super 8 round. The tournament was held in USA and West Indies. India won the title.";
+  }
+  if (m.indexOf("imf") !== -1 || m.indexOf("bailout") !== -1 || m.indexOf("economy") !== -1 || m.indexOf("inflation") !== -1) {
+    return "Pakistan reached a $7 BILLION Extended Fund Facility (EFF) agreement with the IMF in 2024 to stabilize its economy. Inflation has been gradually coming down after hitting record highs in 2023.";
+  }
+  if (m.indexOf("cpec") !== -1 || m.indexOf("china pakistan economic") !== -1) {
+    return "CPEC (China-Pakistan Economic Corridor) is a massive infrastructure project worth over $65 BILLION. It connects Gwadar Port in Pakistan to Kashgar in China, including roads, railways, energy projects and special economic zones.";
+  }
+
+  // ECONOMY & SCIENCE
+  if (m.indexOf("largest export") !== -1 || m.indexOf("main export") !== -1 || (m.indexOf("export") !== -1 && m.indexOf("pakistan") !== -1)) {
+    return "Pakistan's largest export is COTTON AND TEXTILES including yarn, fabric and garments. Textiles account for about 60% of Pakistan's total exports. Pakistan is one of the world's top cotton producers.";
+  }
+  if (m.indexOf("suparco") !== -1 || m.indexOf("space agency") !== -1) {
+    return "SUPARCO (Space and Upper Atmosphere Research Commission) is Pakistan's national space agency. Founded in 1961, it is one of the oldest space agencies in Asia. It works on satellite technology and space programs.";
+  }
+  if (m.indexOf("arfa karim") !== -1 || m.indexOf("youngest") !== -1 || m.indexOf("microsoft certified") !== -1) {
+    return "ARFA KARIM became the world's youngest Microsoft Certified Professional in 2004 at just 9 years old! She was from Faisalabad, Punjab. A true Pakistani genius and inspiration!";
+  }
+
+  // SPORTS
+  if (m.indexOf("younis khan") !== -1 || m.indexOf("test runs") !== -1 || m.indexOf("most runs") !== -1) {
+    return "YOUNIS KHAN is Pakistan's all-time leading Test cricket run-scorer with 10,099 runs in 118 Test matches including 34 centuries. He is one of Pakistan's greatest batsmen ever!";
+  }
+  if (m.indexOf("babar azam") !== -1) {
+    return "BABAR AZAM is Pakistan's premier batsman and former captain. He has been ranked No.1 in ODI batting rankings and is known for his elegant strokeplay and consistency across all formats.";
+  }
+  if (m.indexOf("squash") !== -1 || m.indexOf("jahangir") !== -1) {
+    return "Pakistan dominated world squash for decades! JAHANGIR KHAN won the World Open Squash Championship 6 times and JANSHER KHAN won it 8 times. Pakistan produced some of the greatest squash players in history!";
+  }
+  if (m.indexOf("cricket") !== -1) {
+    return "Pakistan is a cricket-mad nation! The Pakistan Super League (PSL) is our top domestic competition. Famous players include Wasim Akram (greatest fast bowler), Javed Miandad, Younis Khan, Babar Azam and Shaheen Afridi. Pakistan won the 1992 Cricket World Cup!";
+  }
+
+  // CITIES
+  if (m.indexOf("lahore") !== -1) {
+    return "LAHORE is Pakistan's cultural capital and the capital of Punjab province. It is home to Badshahi Mosque, Lahore Fort (both UNESCO sites), and Data Darbar. Called the Heart of Pakistan, it is famous for its food, history and culture!";
+  }
+  if (m.indexOf("karachi") !== -1) {
+    return "KARACHI is Pakistan's largest city and economic hub - the capital of Sindh province and Pakistan's main seaport. With over 20 million people, it is one of the world's largest cities. It was Pakistan's first capital after independence.";
+  }
+  if (m.indexOf("islamabad") !== -1) {
+    return "ISLAMABAD is the capital of Pakistan - built in the 1960s as a planned city. It is known for its wide roads, greenery, and the Faisal Mosque which is one of the largest mosques in the world.";
+  }
+  if (m.indexOf("punjab") !== -1) {
+    return "PUNJAB is Pakistan's most populous province with Lahore as its capital. Punjab means Land of Five Rivers. It is Pakistan's agricultural heartland producing most of the country's wheat and cotton.";
+  }
+  if (m.indexOf("sindh") !== -1) {
+    return "SINDH is Pakistan's second largest province by population with Karachi as its capital. It is home to the ancient Indus Valley Civilization sites. The Sindhi language and culture are among the oldest in the world!";
+  }
+  if (m.indexOf("balochistan") !== -1) {
+    return "BALOCHISTAN is Pakistan's largest province by area covering 44% of Pakistan's land, with Quetta as its capital. Gwadar Port (CPEC hub) is in Balochistan. It is rich in natural gas, coal and minerals.";
+  }
+  if (m.indexOf("kpk") !== -1 || m.indexOf("khyber pakhtunkhwa") !== -1 || m.indexOf("peshawar") !== -1) {
+    return "KHYBER PAKHTUNKHWA (KPK) is Pakistan's northwestern province with Peshawar as its capital. It borders Afghanistan and is home to the famous Khyber Pass. The Pashtun people here are known for their bravery and hospitality!";
+  }
+
+  // STUDY TIPS
+  if (m.indexOf("study tip") !== -1 || m.indexOf("how to study") !== -1 || m.indexOf("improve score") !== -1 || m.indexOf("quiz tip") !== -1 || m.indexOf("how to pass") !== -1 || m.indexOf("preparation") !== -1) {
+    return "YOUR WAY Top Study Tips for Pakistan GK: 1) Read Dawn or Geo News daily for current affairs. 2) Study Pakistan's constitution. 3) Know all 4 provinces, their capitals and key facts. 4) Practice 1 quiz every day on this platform. 5) Review every wrong answer carefully. 6) Focus on 2024-2025 current affairs. 7) Make short notes and revise weekly. Consistency is the KEY to success!";
+  }
+  if (m.indexOf("quiz") !== -1) {
+    return "Go to the Quiz section to test your knowledge! You will get 20 random questions from 40 total, with 15 seconds per question. 7 categories: Basics, History, Geography, Current Affairs, Economy, Sports and Science. Practice daily to improve your rank. Good luck!";
+  }
+
+  // DEFAULTS
+  if (m.indexOf("pakistan") !== -1 && m.indexOf("history") !== -1) {
+    return "Pakistan has a rich history! Founded on 14 August 1947 by Quaid-e-Azam Jinnah. The ancient Indus Valley Civilization existed here 4,500 years ago. The region was ruled by Mauryas, Mughals and the British before independence. What specific period of history would you like to know?";
+  }
+  if (m.indexOf("pakistan") !== -1) {
+    return "Pakistan (officially Islamic Republic of Pakistan) is a South Asian country founded in 1947. Capital: Islamabad. Population: ~240 million (5th largest). Currency: Pakistani Rupee. National language: Urdu. 4 provinces: Punjab, Sindh, KPK, Balochistan. What specific aspect would you like to know more about?";
+  }
+
+  var defaults = [
+    "Great question! I am YOUR WAY AI created by DEAR SAJID, specialising in Pakistan GK. Try asking me about Pakistan history, geography, current affairs 2024-25, provinces, rivers, mountains, famous Pakistanis, economy or sports!",
+    "I am your Pakistan GK expert! I can answer questions about: Pakistan history, provinces, rivers, mountains, leaders, current affairs, economy, cricket and much more. What would you like to know?",
+    "Excellent curiosity! I specialise in Pakistan GK and Current Affairs. Ask me about any topic - history from 1947, geography, famous Pakistanis, current PM, CPEC, cricket, constitution and more. I am here to help!",
+    "I am YOUR WAY Assistant, founded by DEAR SAJID to help Pakistani students succeed! I know about Pakistan history, geography, current affairs, sports, economy and culture. Please ask a more specific question about Pakistan!"
+  ];
+  return defaults[Math.floor(Math.random() * defaults.length)];
+}
+
+function doChat(){
+  var inp=$id('cInp'),btn=$id('cBtn'),msg=inp.value.trim();
+  if(!msg)return;
+  inp.value='';inp.disabled=true;btn.disabled=true;btn.textContent='...';
+  addUser(msg);addTyping();
+  setTimeout(function(){
+    rmTyping();
+    var reply=getAIReply(msg);
+    addBot(reply);
+    inp.disabled=false;btn.disabled=false;btn.textContent='Send \u2192';inp.focus();
+  }, 500 + Math.floor(Math.random()*400));
+}
+
+/* ===== ADMIN ===== */
+function initAdmin(){
+  setText('admDate',nowFull());
+  var thisM=nowD(),newM=db.filter(function(u){return u.joined===thisM;}).length;
+  setHTML('admStats',[{l:'Total Sign-Ups',v:db.length,i:'👥'},{l:'New This Month',v:newM,i:'🆕'},{l:'Questions',v:'40',i:'📝'},{l:'Status',v:'LIVE',i:'🟢'}].map(function(s){return '<div class="as"><div style="font-size:1.3rem;margin-bottom:4px">'+s.i+'</div><div class="n">'+s.v+'</div><div class="l">'+s.l+'</div></div>';}).join(''));
+  renderSt();
+}
+function renderSt(f){
+  var list=f?db.filter(function(u){return u.name.toLowerCase().includes(f.toLowerCase());}):db;
+  setText('totCount',db.length);
+  if(!db.length){setHTML('stTable','<tr><td colspan="4" style="text-align:center;color:rgba(232,244,240,.5);padding:2rem">📭 No students yet. Share your platform link!</td></tr>');return;}
+  setHTML('stTable',list.map(function(u,i){return '<tr><td style="color:rgba(232,244,240,.5);font-size:.76rem">'+String(i+1).padStart(2,'0')+'</td><td><div style="display:flex;align-items:center;gap:7px"><div class="mav">'+u.name[0]+'</div>'+u.name+'</div></td><td style="color:rgba(232,244,240,.5);font-size:.82rem">'+u.joined+'</td><td><span class="bdg bg">Active</span></td></tr>';}).join(''));
+}
+function filterSt(){renderSt($id('sSearch').value);}
+
+/* ===== BOUNCE ANIMATION ===== */
+var style=document.createElement('style');
+style.textContent='@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
